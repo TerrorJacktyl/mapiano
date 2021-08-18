@@ -1,4 +1,5 @@
 import React from "react";
+import "./Octave.css";
 
 const OCTAVE = "CDEFGAB";
 const SHARPS = "CDFGA";
@@ -34,4 +35,12 @@ export function Octave() {
       </div>
     </div>
   );
+}
+
+type ViewProps = {
+  children?: React.ReactNode;
+};
+
+export function OctaveView(props: ViewProps) {
+  return <section className="octave-view">{props.children}</section>;
 }
