@@ -1,0 +1,29 @@
+.ChordControlsView {
+  border: 2px solid gray;
+  margin: 3%;
+  padding: min(2%, 10px);
+  box-sizing: border-box;
+  width: max(300px, 40vw);
+}
+
+form {
+  display: table;
+  flex-flow: column nowrap;
+  text-align: left;
+}
+
+p {
+  display: table-row;
+}
+
+label {
+  padding: 2px;
+  font-size: 1.5em;
+  display: table-cell;
+}
+
+input {
+  font-size: 1em;
+  display: table-cell;
+  width: 50%;
+}

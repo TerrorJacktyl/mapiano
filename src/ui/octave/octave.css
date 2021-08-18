@@ -1,11 +1,11 @@
-.octave-view {
+.OctaveView {
   display: flex;
   flex-flow: row wrap;
   justify-content: center;
   width: max(95%, 300px);
 }
 
-.octave {
+.Octave {
   /* Make this response on displays <300px wide later */
   width: max(300px, 30vw);
   height: min(30vh, 500px);
@@ -28,7 +28,7 @@
   grid-template-rows: 100%;
 }
 
-.key {
+.Key {
   /* Width intended for use in flex layout */
   width: calc(100% / 7);
   height: 100%;
@@ -39,13 +39,14 @@
   box-sizing: border-box;
 }
 
-.sharp {
+.Sharp {
   /* Width intended for use in grid layout */
   width: 50%;
   height: 100%;
   background-color: black;
   position: relative;
   left: -25%;
+  top: -4%;
   /* Add depth effect with borders */
   border-radius: 0.35em;
   border-color: white;

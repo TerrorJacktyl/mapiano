@@ -7,11 +7,11 @@ const WHITE_KEYS = OCTAVE.split("");
 const SHARP_KEYS = OCTAVE.split("");
 
 function WhiteKey() {
-  return <div className="key"></div>;
+  return <div className="Key"></div>;
 }
 
 function SharpKey() {
-  return <div className="key sharp"></div>;
+  return <div className="Key Sharp"></div>;
 }
 
 function GhostKey() {
@@ -24,7 +24,7 @@ function GhostOrSharp(note: string) {
 
 export function Octave() {
   return (
-    <div className="octave">
+    <div className="Octave">
       <div className="sharps">
         {[<GhostKey />].concat(SHARP_KEYS.map((note) => GhostOrSharp(note)))}
       </div>
@@ -42,5 +42,5 @@ type ViewProps = {
 };
 
 export function OctaveView(props: ViewProps) {
-  return <section className="octave-view">{props.children}</section>;
+  return <section className="OctaveView">{props.children}</section>;
 }
