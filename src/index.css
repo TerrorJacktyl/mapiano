@@ -56,6 +56,7 @@ code {
   height: 100%;
   background-color: white;
   border: 2px solid black;
+  border-bottom-width: 5px;
   border-radius: 0.3em;
   box-sizing: border-box;
 }
@@ -67,4 +68,9 @@ code {
   background-color: black;
   position: relative;
   left: -25%;
+  /* Add depth effect with borders */
+  border-radius: 0.35em;
+  border-color: white;
+  border-bottom-color: black;
+  border-top-color: black;
 }
