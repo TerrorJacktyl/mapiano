@@ -4,10 +4,10 @@
 * tone := 'A' | 'B' | 'C' | 'D' | 'E' | 'F' | 'G'
 * note := tone=tone sharp='#'?
 * root := note
-* major := 'M' | 'maj' | ''
-* minor := 'min' | 'm'
-* diminished := 'o' | 'dim'
-* augmented := '\+' | 'aug'
+* major := symbol={'M' | 'maj' | ''}
+* minor := symbol={'min' | 'm'}
+* diminished := symbol={ 'o' | 'dim' }
+* augmented := symbol={'\+' | 'aug'}
 * quality := minor | diminished | augmented　| major
 * chord := root=root quality=quality $
 */
@@ -27,15 +27,19 @@ export enum ASTKinds {
     tone_7 = "tone_7",
     note = "note",
     root = "root",
-    major_1 = "major_1",
-    major_2 = "major_2",
-    major_3 = "major_3",
-    minor_1 = "minor_1",
-    minor_2 = "minor_2",
-    diminished_1 = "diminished_1",
-    diminished_2 = "diminished_2",
-    augmented_1 = "augmented_1",
-    augmented_2 = "augmented_2",
+    major = "major",
+    major_$0_1 = "major_$0_1",
+    major_$0_2 = "major_$0_2",
+    major_$0_3 = "major_$0_3",
+    minor = "minor",
+    minor_$0_1 = "minor_$0_1",
+    minor_$0_2 = "minor_$0_2",
+    diminished = "diminished",
+    diminished_$0_1 = "diminished_$0_1",
+    diminished_$0_2 = "diminished_$0_2",
+    augmented = "augmented",
+    augmented_$0_1 = "augmented_$0_1",
+    augmented_$0_2 = "augmented_$0_2",
     quality_1 = "quality_1",
     quality_2 = "quality_2",
     quality_3 = "quality_3",
@@ -58,19 +62,35 @@ export interface note {
     sharp: Nullable<string>;
 }
 export type root = note;
-export type major = major_1 | major_2 | major_3;
-export type major_1 = string;
-export type major_2 = string;
-export type major_3 = string;
-export type minor = minor_1 | minor_2;
-export type minor_1 = string;
-export type minor_2 = string;
-export type diminished = diminished_1 | diminished_2;
-export type diminished_1 = string;
-export type diminished_2 = string;
-export type augmented = augmented_1 | augmented_2;
-export type augmented_1 = string;
-export type augmented_2 = string;
+export interface major {
+    kind: ASTKinds.major;
+    symbol: major_$0;
+}
+export type major_$0 = major_$0_1 | major_$0_2 | major_$0_3;
+export type major_$0_1 = string;
+export type major_$0_2 = string;
+export type major_$0_3 = string;
+export interface minor {
+    kind: ASTKinds.minor;
+    symbol: minor_$0;
+}
+export type minor_$0 = minor_$0_1 | minor_$0_2;
+export type minor_$0_1 = string;
+export type minor_$0_2 = string;
+export interface diminished {
+    kind: ASTKinds.diminished;
+    symbol: diminished_$0;
+}
+export type diminished_$0 = diminished_$0_1 | diminished_$0_2;
+export type diminished_$0_1 = string;
+export type diminished_$0_2 = string;
+export interface augmented {
+    kind: ASTKinds.augmented;
+    symbol: augmented_$0;
+}
+export type augmented_$0 = augmented_$0_1 | augmented_$0_2;
+export type augmented_$0_1 = string;
+export type augmented_$0_2 = string;
 export type quality = quality_1 | quality_2 | quality_3 | quality_4;
 export type quality_1 = minor;
 export type quality_2 = diminished;
@@ -152,55 +172,107 @@ export class Parser {
         return this.matchnote($$dpth + 1, $$cr);
     }
     public matchmajor($$dpth: number, $$cr?: ErrorTracker): Nullable<major> {
-        return this.choice<major>([
-            () => this.matchmajor_1($$dpth + 1, $$cr),
-            () => this.matchmajor_2($$dpth + 1, $$cr),
-            () => this.matchmajor_3($$dpth + 1, $$cr),
+        return this.run<major>($$dpth,
+            () => {
+                let $scope$symbol: Nullable<major_$0>;
+                let $$res: Nullable<major> = null;
+                if (true
+                    && ($scope$symbol = this.matchmajor_$0($$dpth + 1, $$cr)) !== null
+                ) {
+                    $$res = {kind: ASTKinds.major, symbol: $scope$symbol};
+                }
+                return $$res;
+            });
+    }
+    public matchmajor_$0($$dpth: number, $$cr?: ErrorTracker): Nullable<major_$0> {
+        return this.choice<major_$0>([
+            () => this.matchmajor_$0_1($$dpth + 1, $$cr),
+            () => this.matchmajor_$0_2($$dpth + 1, $$cr),
+            () => this.matchmajor_$0_3($$dpth + 1, $$cr),
         ]);
     }
-    public matchmajor_1($$dpth: number, $$cr?: ErrorTracker): Nullable<major_1> {
+    public matchmajor_$0_1($$dpth: number, $$cr?: ErrorTracker): Nullable<major_$0_1> {
         return this.regexAccept(String.raw`(?:M)`, $$dpth + 1, $$cr);
     }
-    public matchmajor_2($$dpth: number, $$cr?: ErrorTracker): Nullable<major_2> {
+    public matchmajor_$0_2($$dpth: number, $$cr?: ErrorTracker): Nullable<major_$0_2> {
         return this.regexAccept(String.raw`(?:maj)`, $$dpth + 1, $$cr);
     }
-    public matchmajor_3($$dpth: number, $$cr?: ErrorTracker): Nullable<major_3> {
+    public matchmajor_$0_3($$dpth: number, $$cr?: ErrorTracker): Nullable<major_$0_3> {
         return this.regexAccept(String.raw`(?:)`, $$dpth + 1, $$cr);
     }
     public matchminor($$dpth: number, $$cr?: ErrorTracker): Nullable<minor> {
-        return this.choice<minor>([
-            () => this.matchminor_1($$dpth + 1, $$cr),
-            () => this.matchminor_2($$dpth + 1, $$cr),
+        return this.run<minor>($$dpth,
+            () => {
+                let $scope$symbol: Nullable<minor_$0>;
+                let $$res: Nullable<minor> = null;
+                if (true
+                    && ($scope$symbol = this.matchminor_$0($$dpth + 1, $$cr)) !== null
+                ) {
+                    $$res = {kind: ASTKinds.minor, symbol: $scope$symbol};
+                }
+                return $$res;
+            });
+    }
+    public matchminor_$0($$dpth: number, $$cr?: ErrorTracker): Nullable<minor_$0> {
+        return this.choice<minor_$0>([
+            () => this.matchminor_$0_1($$dpth + 1, $$cr),
+            () => this.matchminor_$0_2($$dpth + 1, $$cr),
         ]);
     }
-    public matchminor_1($$dpth: number, $$cr?: ErrorTracker): Nullable<minor_1> {
+    public matchminor_$0_1($$dpth: number, $$cr?: ErrorTracker): Nullable<minor_$0_1> {
         return this.regexAccept(String.raw`(?:min)`, $$dpth + 1, $$cr);
     }
-    public matchminor_2($$dpth: number, $$cr?: ErrorTracker): Nullable<minor_2> {
+    public matchminor_$0_2($$dpth: number, $$cr?: ErrorTracker): Nullable<minor_$0_2> {
         return this.regexAccept(String.raw`(?:m)`, $$dpth + 1, $$cr);
     }
     public matchdiminished($$dpth: number, $$cr?: ErrorTracker): Nullable<diminished> {
-        return this.choice<diminished>([
-            () => this.matchdiminished_1($$dpth + 1, $$cr),
-            () => this.matchdiminished_2($$dpth + 1, $$cr),
+        return this.run<diminished>($$dpth,
+            () => {
+                let $scope$symbol: Nullable<diminished_$0>;
+                let $$res: Nullable<diminished> = null;
+                if (true
+                    && ($scope$symbol = this.matchdiminished_$0($$dpth + 1, $$cr)) !== null
+                ) {
+                    $$res = {kind: ASTKinds.diminished, symbol: $scope$symbol};
+                }
+                return $$res;
+            });
+    }
+    public matchdiminished_$0($$dpth: number, $$cr?: ErrorTracker): Nullable<diminished_$0> {
+        return this.choice<diminished_$0>([
+            () => this.matchdiminished_$0_1($$dpth + 1, $$cr),
+            () => this.matchdiminished_$0_2($$dpth + 1, $$cr),
         ]);
     }
-    public matchdiminished_1($$dpth: number, $$cr?: ErrorTracker): Nullable<diminished_1> {
+    public matchdiminished_$0_1($$dpth: number, $$cr?: ErrorTracker): Nullable<diminished_$0_1> {
         return this.regexAccept(String.raw`(?:o)`, $$dpth + 1, $$cr);
     }
-    public matchdiminished_2($$dpth: number, $$cr?: ErrorTracker): Nullable<diminished_2> {
+    public matchdiminished_$0_2($$dpth: number, $$cr?: ErrorTracker): Nullable<diminished_$0_2> {
         return this.regexAccept(String.raw`(?:dim)`, $$dpth + 1, $$cr);
     }
     public matchaugmented($$dpth: number, $$cr?: ErrorTracker): Nullable<augmented> {
-        return this.choice<augmented>([
-            () => this.matchaugmented_1($$dpth + 1, $$cr),
-            () => this.matchaugmented_2($$dpth + 1, $$cr),
+        return this.run<augmented>($$dpth,
+            () => {
+                let $scope$symbol: Nullable<augmented_$0>;
+                let $$res: Nullable<augmented> = null;
+                if (true
+                    && ($scope$symbol = this.matchaugmented_$0($$dpth + 1, $$cr)) !== null
+                ) {
+                    $$res = {kind: ASTKinds.augmented, symbol: $scope$symbol};
+                }
+                return $$res;
+            });
+    }
+    public matchaugmented_$0($$dpth: number, $$cr?: ErrorTracker): Nullable<augmented_$0> {
+        return this.choice<augmented_$0>([
+            () => this.matchaugmented_$0_1($$dpth + 1, $$cr),
+            () => this.matchaugmented_$0_2($$dpth + 1, $$cr),
         ]);
     }
-    public matchaugmented_1($$dpth: number, $$cr?: ErrorTracker): Nullable<augmented_1> {
+    public matchaugmented_$0_1($$dpth: number, $$cr?: ErrorTracker): Nullable<augmented_$0_1> {
         return this.regexAccept(String.raw`(?:\+)`, $$dpth + 1, $$cr);
     }
-    public matchaugmented_2($$dpth: number, $$cr?: ErrorTracker): Nullable<augmented_2> {
+    public matchaugmented_$0_2($$dpth: number, $$cr?: ErrorTracker): Nullable<augmented_$0_2> {
         return this.regexAccept(String.raw`(?:aug)`, $$dpth + 1, $$cr);
     }
     public matchquality($$dpth: number, $$cr?: ErrorTracker): Nullable<quality> {
