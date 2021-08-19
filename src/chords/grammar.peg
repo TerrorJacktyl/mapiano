@@ -6,5 +6,5 @@ major := 'M' | 'maj' | ''
 minor := 'min' | 'm'
 diminished := 'o' | 'dim'
 augmented := '\+' | 'aug'
-quality := minor | diminished | augmented　| major
+quality := minor=minor | diminished | augmented　| major
 chord := root=root quality=quality $
