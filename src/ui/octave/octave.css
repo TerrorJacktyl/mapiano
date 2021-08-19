@@ -53,3 +53,8 @@
   border-bottom-color: black;
   border-top-color: black;
 }
+
+.Ghost {
+  width: 0px;
+  height: 0px;
+}

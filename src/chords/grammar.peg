@@ -1,0 +1,10 @@
+start := chord
+tone := 'A' | 'B' | 'C' | 'D' | 'E' | 'F' | 'G'
+note := tone=tone sharp='#'?
+root := note
+major := 'M' | 'maj' | ''
+minor := 'min' | 'm'
+diminished := 'o' | 'dim'
+augmented := '\+' | 'aug'
+quality := minor | diminished | augmented　| major
+chord := root=root quality=quality $

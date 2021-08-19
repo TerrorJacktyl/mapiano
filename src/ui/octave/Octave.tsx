@@ -15,7 +15,7 @@ function SharpKey() {
 }
 
 function GhostKey() {
-  return <div />;
+  return <div className="Ghost" />;
 }
 
 function GhostOrSharp(note: string) {
