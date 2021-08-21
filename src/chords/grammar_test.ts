@@ -39,7 +39,7 @@ const hasError = (result: ParseResult) =>
 // Test all possible chords
 function testAll(chordStrings: string[]) {
   let errorHasOccurred = false;
-  chords
+  chordStrings
     .map<[string, ParseResult]>((c) => [c, parse(c)])
     .forEach(([c, r]: [string, ParseResult]) => {
       if (hasError(r)) {
@@ -61,6 +61,6 @@ const evaluatedChords = manualTests
   .filter((r) => r.ast != null)
   .map((r) => evaluate(<chord>r.ast))
   .forEach((c) => console.log(c, c.intervals));
-// for (const result of manualTests.map(parse)) {
-//   if (result.ast) console.log(evaluate(result.ast));
-// }
+
+// To compile grammar and run tests
+// tspeg grammar.peg parser.ts && deno run grammar_test.ts
