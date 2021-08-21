@@ -23,15 +23,12 @@ const UNISON = 0,
   MINOR_THIRTEENTH = OCTAVE + MAJOR_SIXTH,
   MAJOR_THIRTEENTH = OCTAVE + MAJOR_SIXTH;
 
-// Define chord type (array)
-export type Chord = Interval[];
-
 // Helper function
-function replace(chord: Chord, remove: Interval, replacement: Interval) {
+function replace(chord: Interval[], remove: Interval, replacement: Interval) {
   return chord.map((interval) => (interval == remove ? replacement : interval));
 }
 
-function remove(chord: Chord, remove: Interval) {
+function remove(chord: Interval[], remove: Interval) {
   const removeIndex = chord.find((i) => i == remove);
   return removeIndex ? chord.splice(removeIndex, 1) : chord;
 }
@@ -46,4 +43,35 @@ const AUGMENTED = replace(MAJOR, PERFECT_FIFTH, MINOR_SIXTH);
 // Write chord added intervals (major sixth, major/minor seventh, major 9th/11th/13th)
 // Write chord extensions (b9, 9, 11, #11, b13, 13) and minor 7th modifications (M7)
 // Write chord modifications (sus2, sus4)
+
+type Tone = "C" | "D" | "E" | "F" | "G" | "A" | "B";
+type Sharp = "#";
+type Flat = "b";
+type Modifier = Sharp | Flat;
+type TNote = {
+  tone: Tone;
+  modifier?: Modifier;
+  symbol: string;
+};
+type Quality = "Major" | "Minor" | "Augmented" | "Diminished" | "Power";
+
+class Note implements TNote {
+  tone: Tone;
+  modifier?: Modifier;
+
+  constructor(tone: Tone, modifier?: Modifier) {
+    this.tone = tone;
+    this.modifier = modifier;
+  }
+
+  get symbol() {
+    return this.modifier ? this.tone + this.modifier : this.tone;
+  }
+}
+
+type Chord = {
+  root: Note;
+  quality: Quality;
+};
+
 export {};

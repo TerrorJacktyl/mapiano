@@ -1,6 +1,5 @@
 import { parse } from "./parser.ts";
 import type { ParseResult } from "./parser.ts";
-import type { Chord } from "./chords.ts";
 
 // Helper functions
 function zip<X, Y>(xs: X[], ys: Y[]) {
@@ -28,10 +27,7 @@ function build(_xxs: string[][]): string[] {
 const TONES = ["C", "D", "E", "F", "G", "A", "B"];
 const TONE_MODIFIERS = ["", "#", "b"];
 const NOTES = build([TONES, TONE_MODIFIERS]);
-console.log(NOTES);
 const QUALITIES = ["", "maj", "M", "min", "m", "o", "dim", "+", "aug"];
-
-// const chords = build(NOTES, QUALITIES);
 const chords = build([NOTES, QUALITIES]);
 console.log(chords);
 
@@ -39,8 +35,21 @@ const hasError = (result: ParseResult) =>
   result?.errs?.length && result.errs.length > 0;
 
 // Test all possible chords
-chords
-  .map<[string, ParseResult]>((c) => [c, parse(c)])
-  .forEach(([c, r]: [string, ParseResult]) => {
-    hasError(r) ? console.log(c, r.errs) : {};
-  });
+function testAll(chordStrings: string[]) {
+  let errorHasOccurred = false;
+  chords
+    .map<[string, ParseResult]>((c) => [c, parse(c)])
+    .forEach(([c, r]: [string, ParseResult]) => {
+      if (hasError(r)) {
+        console.log(c, r.errs);
+        errorHasOccurred = true;
+      }
+    });
+  console.log(
+    errorHasOccurred ? "Errors found!" : "All chords parsed without errors!"
+  );
+}
+
+// testAll(chords);
+
+console.log(parse("C")?.ast);
