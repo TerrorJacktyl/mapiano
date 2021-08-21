@@ -2,7 +2,7 @@
 * INPUT GRAMMAR:
 * start := chord
 * tone := 'C' | 'D' | 'E' | 'F' | 'G' | 'A' | 'B'
-* note := tone=tone {sharp='#' | flat='b'}?
+* note := tone=tone modifier={'#' | 'b'}?
 * root := note
 * major := major={'maj' | 'M'}
 * major2 := major=''
@@ -63,16 +63,11 @@ export type tone_7 = string;
 export interface note {
     kind: ASTKinds.note;
     tone: tone;
+    modifier: Nullable<note_$0>;
 }
 export type note_$0 = note_$0_1 | note_$0_2;
-export interface note_$0_1 {
-    kind: ASTKinds.note_$0_1;
-    sharp: string;
-}
-export interface note_$0_2 {
-    kind: ASTKinds.note_$0_2;
-    flat: string;
-}
+export type note_$0_1 = string;
+export type note_$0_2 = string;
 export type root = note;
 export interface major {
     kind: ASTKinds.major;
@@ -173,12 +168,13 @@ export class Parser {
         return this.run<note>($$dpth,
             () => {
                 let $scope$tone: Nullable<tone>;
+                let $scope$modifier: Nullable<Nullable<note_$0>>;
                 let $$res: Nullable<note> = null;
                 if (true
                     && ($scope$tone = this.matchtone($$dpth + 1, $$cr)) !== null
-                    && ((this.matchnote_$0($$dpth + 1, $$cr)) || true)
+                    && (($scope$modifier = this.matchnote_$0($$dpth + 1, $$cr)) || true)
                 ) {
-                    $$res = {kind: ASTKinds.note, tone: $scope$tone};
+                    $$res = {kind: ASTKinds.note, tone: $scope$tone, modifier: $scope$modifier};
                 }
                 return $$res;
             });
@@ -190,30 +186,10 @@ export class Parser {
         ]);
     }
     public matchnote_$0_1($$dpth: number, $$cr?: ErrorTracker): Nullable<note_$0_1> {
-        return this.run<note_$0_1>($$dpth,
-            () => {
-                let $scope$sharp: Nullable<string>;
-                let $$res: Nullable<note_$0_1> = null;
-                if (true
-                    && ($scope$sharp = this.regexAccept(String.raw`(?:#)`, $$dpth + 1, $$cr)) !== null
-                ) {
-                    $$res = {kind: ASTKinds.note_$0_1, sharp: $scope$sharp};
-                }
-                return $$res;
-            });
+        return this.regexAccept(String.raw`(?:#)`, $$dpth + 1, $$cr);
     }
     public matchnote_$0_2($$dpth: number, $$cr?: ErrorTracker): Nullable<note_$0_2> {
-        return this.run<note_$0_2>($$dpth,
-            () => {
-                let $scope$flat: Nullable<string>;
-                let $$res: Nullable<note_$0_2> = null;
-                if (true
-                    && ($scope$flat = this.regexAccept(String.raw`(?:b)`, $$dpth + 1, $$cr)) !== null
-                ) {
-                    $$res = {kind: ASTKinds.note_$0_2, flat: $scope$flat};
-                }
-                return $$res;
-            });
+        return this.regexAccept(String.raw`(?:b)`, $$dpth + 1, $$cr);
     }
     public matchroot($$dpth: number, $$cr?: ErrorTracker): Nullable<root> {
         return this.matchnote($$dpth + 1, $$cr);

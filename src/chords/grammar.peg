@@ -1,6 +1,6 @@
 start := chord
 tone := 'C' | 'D' | 'E' | 'F' | 'G' | 'A' | 'B'
-note := tone=tone {sharp='#' | flat='b'}?
+note := tone=tone modifier={'#' | 'b'}?
 root := note
 major := major={'maj' | 'M'}
 major2 := major=''

@@ -1,5 +1,6 @@
 import { parse } from "./parser.ts";
 import type { ParseResult } from "./parser.ts";
+import { evaluate } from "./chords.ts";
 
 // Helper functions
 function zip<X, Y>(xs: X[], ys: Y[]) {
@@ -52,4 +53,8 @@ function testAll(chordStrings: string[]) {
 
 // testAll(chords);
 
-console.log(parse("C")?.ast);
+// Test evaluate function
+const manualTests = ["C", "C#", "Cbaug", "Cbm"];
+for (let result of manualTests.map(parse)) {
+  if (result.ast) console.log(evaluate(result.ast));
+}

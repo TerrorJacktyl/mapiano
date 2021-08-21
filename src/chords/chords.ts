@@ -1,3 +1,7 @@
+import type {
+  chord as ParsedChord,
+  quality as ParsedQuality,
+} from "./parser.ts";
 // Hardcode intervals
 export type Interval = number;
 const UNISON = 0,
@@ -47,7 +51,7 @@ const AUGMENTED = replace(MAJOR, PERFECT_FIFTH, MINOR_SIXTH);
 type Tone = "C" | "D" | "E" | "F" | "G" | "A" | "B";
 type Sharp = "#";
 type Flat = "b";
-type Modifier = Sharp | Flat;
+type Modifier = undefined | Sharp | Flat;
 type TNote = {
   tone: Tone;
   modifier?: Modifier;
@@ -57,7 +61,7 @@ type Quality = "Major" | "Minor" | "Augmented" | "Diminished" | "Power";
 
 class Note implements TNote {
   tone: Tone;
-  modifier?: Modifier;
+  modifier: Modifier = undefined;
 
   constructor(tone: Tone, modifier?: Modifier) {
     this.tone = tone;
@@ -69,9 +73,43 @@ class Note implements TNote {
   }
 }
 
-type Chord = {
+type TChord = {
   root: Note;
   quality: Quality;
 };
+
+class Chord implements TChord {
+  root: Note;
+  quality: Quality;
+
+  constructor(root: Note, quality: Quality) {
+    this.root = root;
+    this.quality = quality;
+  }
+}
+
+type FullParsedQuality = ParsedQuality & {
+  major?: string;
+  minor?: string;
+  augmented?: string;
+  diminished?: string;
+  power?: string;
+};
+
+function evaluateQuality(quality: FullParsedQuality): Quality {
+  if (quality.major || quality.major == "") return "Major";
+  if (quality.minor) return "Minor";
+  if (quality.augmented) return "Augmented";
+  if (quality.diminished) return "Diminished";
+  return "Power";
+}
+
+export function evaluate(chord: ParsedChord): Chord {
+  if (chord == null) throw Error("Parsed chord is null.");
+  const { root: _root, quality: _quality } = chord;
+  const root = new Note(<Tone>_root.tone, <Modifier>_root.modifier);
+  const quality = evaluateQuality(_quality);
+  return new Chord(root, quality);
+}
 
 export {};
