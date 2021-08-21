@@ -5,7 +5,8 @@ root := note
 major := major={'maj' | 'M'}
 major2 := major=''
 minor := minor={'min' | 'm'}
-diminished := diminished={'o' | 'dim'}
 augmented := augmented={'\+' | 'aug'}
-quality := diminished | augmented | major | minor | major2
+diminished := diminished={'o' | 'dim'}
+power := power={'5'}
+quality := power | diminished | augmented | major | minor | major2
 chord := root=root quality=quality $

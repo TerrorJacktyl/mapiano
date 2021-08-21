@@ -7,9 +7,10 @@
 * major := major={'maj' | 'M'}
 * major2 := major=''
 * minor := minor={'min' | 'm'}
-* diminished := diminished={'o' | 'dim'}
 * augmented := augmented={'\+' | 'aug'}
-* quality := diminished | augmented | major | minor | major2
+* diminished := diminished={'o' | 'dim'}
+* power := power={'5'}
+* quality := power | diminished | augmented | major | minor | major2
 * chord := root=root quality=quality $
 */
 type Nullable<T> = T | null;
@@ -37,17 +38,20 @@ export enum ASTKinds {
     minor = "minor",
     minor_$0_1 = "minor_$0_1",
     minor_$0_2 = "minor_$0_2",
-    diminished = "diminished",
-    diminished_$0_1 = "diminished_$0_1",
-    diminished_$0_2 = "diminished_$0_2",
     augmented = "augmented",
     augmented_$0_1 = "augmented_$0_1",
     augmented_$0_2 = "augmented_$0_2",
+    diminished = "diminished",
+    diminished_$0_1 = "diminished_$0_1",
+    diminished_$0_2 = "diminished_$0_2",
+    power = "power",
+    power_$0 = "power_$0",
     quality_1 = "quality_1",
     quality_2 = "quality_2",
     quality_3 = "quality_3",
     quality_4 = "quality_4",
     quality_5 = "quality_5",
+    quality_6 = "quality_6",
     chord = "chord",
     $EOF = "$EOF",
 }
@@ -87,13 +91,6 @@ export interface minor {
 export type minor_$0 = minor_$0_1 | minor_$0_2;
 export type minor_$0_1 = string;
 export type minor_$0_2 = string;
-export interface diminished {
-    kind: ASTKinds.diminished;
-    diminished: diminished_$0;
-}
-export type diminished_$0 = diminished_$0_1 | diminished_$0_2;
-export type diminished_$0_1 = string;
-export type diminished_$0_2 = string;
 export interface augmented {
     kind: ASTKinds.augmented;
     augmented: augmented_$0;
@@ -101,12 +98,25 @@ export interface augmented {
 export type augmented_$0 = augmented_$0_1 | augmented_$0_2;
 export type augmented_$0_1 = string;
 export type augmented_$0_2 = string;
-export type quality = quality_1 | quality_2 | quality_3 | quality_4 | quality_5;
-export type quality_1 = diminished;
-export type quality_2 = augmented;
-export type quality_3 = major;
-export type quality_4 = minor;
-export type quality_5 = major2;
+export interface diminished {
+    kind: ASTKinds.diminished;
+    diminished: diminished_$0;
+}
+export type diminished_$0 = diminished_$0_1 | diminished_$0_2;
+export type diminished_$0_1 = string;
+export type diminished_$0_2 = string;
+export interface power {
+    kind: ASTKinds.power;
+    power: power_$0;
+}
+export type power_$0 = string;
+export type quality = quality_1 | quality_2 | quality_3 | quality_4 | quality_5 | quality_6;
+export type quality_1 = power;
+export type quality_2 = diminished;
+export type quality_3 = augmented;
+export type quality_4 = major;
+export type quality_5 = minor;
+export type quality_6 = major2;
 export interface chord {
     kind: ASTKinds.chord;
     root: root;
@@ -257,31 +267,6 @@ export class Parser {
     public matchminor_$0_2($$dpth: number, $$cr?: ErrorTracker): Nullable<minor_$0_2> {
         return this.regexAccept(String.raw`(?:m)`, $$dpth + 1, $$cr);
     }
-    public matchdiminished($$dpth: number, $$cr?: ErrorTracker): Nullable<diminished> {
-        return this.run<diminished>($$dpth,
-            () => {
-                let $scope$diminished: Nullable<diminished_$0>;
-                let $$res: Nullable<diminished> = null;
-                if (true
-                    && ($scope$diminished = this.matchdiminished_$0($$dpth + 1, $$cr)) !== null
-                ) {
-                    $$res = {kind: ASTKinds.diminished, diminished: $scope$diminished};
-                }
-                return $$res;
-            });
-    }
-    public matchdiminished_$0($$dpth: number, $$cr?: ErrorTracker): Nullable<diminished_$0> {
-        return this.choice<diminished_$0>([
-            () => this.matchdiminished_$0_1($$dpth + 1, $$cr),
-            () => this.matchdiminished_$0_2($$dpth + 1, $$cr),
-        ]);
-    }
-    public matchdiminished_$0_1($$dpth: number, $$cr?: ErrorTracker): Nullable<diminished_$0_1> {
-        return this.regexAccept(String.raw`(?:o)`, $$dpth + 1, $$cr);
-    }
-    public matchdiminished_$0_2($$dpth: number, $$cr?: ErrorTracker): Nullable<diminished_$0_2> {
-        return this.regexAccept(String.raw`(?:dim)`, $$dpth + 1, $$cr);
-    }
     public matchaugmented($$dpth: number, $$cr?: ErrorTracker): Nullable<augmented> {
         return this.run<augmented>($$dpth,
             () => {
@@ -307,6 +292,47 @@ export class Parser {
     public matchaugmented_$0_2($$dpth: number, $$cr?: ErrorTracker): Nullable<augmented_$0_2> {
         return this.regexAccept(String.raw`(?:aug)`, $$dpth + 1, $$cr);
     }
+    public matchdiminished($$dpth: number, $$cr?: ErrorTracker): Nullable<diminished> {
+        return this.run<diminished>($$dpth,
+            () => {
+                let $scope$diminished: Nullable<diminished_$0>;
+                let $$res: Nullable<diminished> = null;
+                if (true
+                    && ($scope$diminished = this.matchdiminished_$0($$dpth + 1, $$cr)) !== null
+                ) {
+                    $$res = {kind: ASTKinds.diminished, diminished: $scope$diminished};
+                }
+                return $$res;
+            });
+    }
+    public matchdiminished_$0($$dpth: number, $$cr?: ErrorTracker): Nullable<diminished_$0> {
+        return this.choice<diminished_$0>([
+            () => this.matchdiminished_$0_1($$dpth + 1, $$cr),
+            () => this.matchdiminished_$0_2($$dpth + 1, $$cr),
+        ]);
+    }
+    public matchdiminished_$0_1($$dpth: number, $$cr?: ErrorTracker): Nullable<diminished_$0_1> {
+        return this.regexAccept(String.raw`(?:o)`, $$dpth + 1, $$cr);
+    }
+    public matchdiminished_$0_2($$dpth: number, $$cr?: ErrorTracker): Nullable<diminished_$0_2> {
+        return this.regexAccept(String.raw`(?:dim)`, $$dpth + 1, $$cr);
+    }
+    public matchpower($$dpth: number, $$cr?: ErrorTracker): Nullable<power> {
+        return this.run<power>($$dpth,
+            () => {
+                let $scope$power: Nullable<power_$0>;
+                let $$res: Nullable<power> = null;
+                if (true
+                    && ($scope$power = this.matchpower_$0($$dpth + 1, $$cr)) !== null
+                ) {
+                    $$res = {kind: ASTKinds.power, power: $scope$power};
+                }
+                return $$res;
+            });
+    }
+    public matchpower_$0($$dpth: number, $$cr?: ErrorTracker): Nullable<power_$0> {
+        return this.regexAccept(String.raw`(?:5)`, $$dpth + 1, $$cr);
+    }
     public matchquality($$dpth: number, $$cr?: ErrorTracker): Nullable<quality> {
         return this.choice<quality>([
             () => this.matchquality_1($$dpth + 1, $$cr),
@@ -314,21 +340,25 @@ export class Parser {
             () => this.matchquality_3($$dpth + 1, $$cr),
             () => this.matchquality_4($$dpth + 1, $$cr),
             () => this.matchquality_5($$dpth + 1, $$cr),
+            () => this.matchquality_6($$dpth + 1, $$cr),
         ]);
     }
     public matchquality_1($$dpth: number, $$cr?: ErrorTracker): Nullable<quality_1> {
-        return this.matchdiminished($$dpth + 1, $$cr);
+        return this.matchpower($$dpth + 1, $$cr);
     }
     public matchquality_2($$dpth: number, $$cr?: ErrorTracker): Nullable<quality_2> {
-        return this.matchaugmented($$dpth + 1, $$cr);
+        return this.matchdiminished($$dpth + 1, $$cr);
     }
     public matchquality_3($$dpth: number, $$cr?: ErrorTracker): Nullable<quality_3> {
-        return this.matchmajor($$dpth + 1, $$cr);
+        return this.matchaugmented($$dpth + 1, $$cr);
     }
     public matchquality_4($$dpth: number, $$cr?: ErrorTracker): Nullable<quality_4> {
-        return this.matchminor($$dpth + 1, $$cr);
+        return this.matchmajor($$dpth + 1, $$cr);
     }
     public matchquality_5($$dpth: number, $$cr?: ErrorTracker): Nullable<quality_5> {
+        return this.matchminor($$dpth + 1, $$cr);
+    }
+    public matchquality_6($$dpth: number, $$cr?: ErrorTracker): Nullable<quality_6> {
         return this.matchmajor2($$dpth + 1, $$cr);
     }
     public matchchord($$dpth: number, $$cr?: ErrorTracker): Nullable<chord> {

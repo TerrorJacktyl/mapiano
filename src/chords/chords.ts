@@ -2,9 +2,11 @@ import type {
   chord as ParsedChord,
   quality as ParsedQuality,
 } from "./parser.ts";
+
 // Hardcode intervals
-export type Interval = number;
-const UNISON = 0,
+
+enum Interval {
+  UNISON = 0,
   MINOR_SECOND = 1,
   MAJOR_SECOND = 2,
   MINOR_THIRD = 3,
@@ -25,24 +27,44 @@ const UNISON = 0,
   COMPOUND_TRITONE = OCTAVE + TRITONE,
   PERFECT_TWELFTH = OCTAVE + PERFECT_FIFTH,
   MINOR_THIRTEENTH = OCTAVE + MAJOR_SIXTH,
-  MAJOR_THIRTEENTH = OCTAVE + MAJOR_SIXTH;
-
-// Helper function
-function replace(chord: Interval[], remove: Interval, replacement: Interval) {
-  return chord.map((interval) => (interval == remove ? replacement : interval));
+  MAJOR_THIRTEENTH = OCTAVE + MAJOR_SIXTH,
 }
 
-function remove(chord: Interval[], remove: Interval) {
-  const removeIndex = chord.find((i) => i == remove);
-  return removeIndex ? chord.splice(removeIndex, 1) : chord;
+// Helper functions
+function replace(ints: Interval[], remove: Interval, replacement: Interval) {
+  return ints.map((interval) => (interval == remove ? replacement : interval));
 }
+
+function remove(ints: Interval[], removals: Interval[]) {
+  return ints.filter((i) => !removals.includes(i));
+}
+
+function add(ints: Interval[], newInterval: Interval) {
+  if (ints.find((i) => i == newInterval)) {
+    return ints;
+  }
+  ints.push(newInterval);
+  ints.sort();
+  return ints;
+}
+
+// When constructing an interval from a chord symbol, always start with a major
+const MAJOR = [Interval.UNISON, Interval.MAJOR_THIRD, Interval.PERFECT_FIFTH];
 
 // Write chord qualities (major, minor, augment, diminished, power) as chords
-const MAJOR = [UNISON, MAJOR_THIRD, PERFECT_FIFTH];
-const MINOR = [UNISON, MINOR_THIRD, PERFECT_FIFTH];
-const POWER = remove(MAJOR, MAJOR_THIRD);
-const DIMINISHED = replace(MINOR, PERFECT_FIFTH, TRITONE);
-const AUGMENTED = replace(MAJOR, PERFECT_FIFTH, MINOR_SIXTH);
+const minorThird = (ints: Interval[]) =>
+  replace(ints, Interval.MAJOR_THIRD, Interval.MINOR_THIRD);
+const augmentedFifth = (ints: Interval[]) =>
+  replace(ints, Interval.PERFECT_FIFTH, Interval.MINOR_SIXTH);
+const diminishedFifth = (ints: Interval[]) =>
+  replace(ints, Interval.PERFECT_FIFTH, Interval.TRITONE);
+const power = (ints: Interval[]) =>
+  remove(ints, [Interval.MAJOR_THIRD, Interval.MINOR_THIRD]);
+
+const MINOR = minorThird(MAJOR);
+const AUGMENTED = augmentedFifth(MAJOR);
+const DIMINSHED = diminishedFifth(MINOR);
+const POWER = power(MAJOR);
 
 // Write chord added intervals (major sixth, major/minor seventh, major 9th/11th/13th)
 // Write chord extensions (b9, 9, 11, #11, b13, 13) and minor 7th modifications (M7)
@@ -58,6 +80,10 @@ type TNote = {
   symbol: string;
 };
 type Quality = "Major" | "Minor" | "Augmented" | "Diminished" | "Power";
+type TChord = {
+  root: Note;
+  quality: Quality;
+};
 
 class Note implements TNote {
   tone: Tone;
@@ -73,11 +99,6 @@ class Note implements TNote {
   }
 }
 
-type TChord = {
-  root: Note;
-  quality: Quality;
-};
-
 class Chord implements TChord {
   root: Note;
   quality: Quality;
@@ -87,6 +108,8 @@ class Chord implements TChord {
     this.quality = quality;
   }
 }
+
+// || Parsing
 
 type FullParsedQuality = ParsedQuality & {
   major?: string;

@@ -54,7 +54,7 @@ function testAll(chordStrings: string[]) {
 // testAll(chords);
 
 // Test evaluate function
-const manualTests = ["C", "C#", "Cbaug", "Cbm"];
-for (let result of manualTests.map(parse)) {
+const manualTests = ["C", "C#", "Cbaug", "Cbm", "C5"];
+for (const result of manualTests.map(parse)) {
   if (result.ast) console.log(evaluate(result.ast));
 }
