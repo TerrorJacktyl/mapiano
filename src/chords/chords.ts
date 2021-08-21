@@ -34,7 +34,6 @@ enum Interval {
 function replace(ints: Interval[], remove: Interval, replacement: Interval) {
   return ints.map((interval) => (interval == remove ? replacement : interval));
 }
-
 function remove(ints: Interval[], removals: Interval[]) {
   return ints.filter((i) => !removals.includes(i));
 }
@@ -52,6 +51,8 @@ function add(ints: Interval[], newInterval: Interval) {
 const MAJOR = [Interval.UNISON, Interval.MAJOR_THIRD, Interval.PERFECT_FIFTH];
 
 // Write chord qualities (major, minor, augment, diminished, power) as chords
+type Modifier = (ints: Interval[]) => Interval[];
+const identity = (ints: Interval[]) => ints;
 const minorThird = (ints: Interval[]) =>
   replace(ints, Interval.MAJOR_THIRD, Interval.MINOR_THIRD);
 const augmentedFifth = (ints: Interval[]) =>
@@ -73,10 +74,10 @@ const POWER = power(MAJOR);
 type Tone = "C" | "D" | "E" | "F" | "G" | "A" | "B";
 type Sharp = "#";
 type Flat = "b";
-type Modifier = undefined | Sharp | Flat;
+type NoteModifier = undefined | Sharp | Flat;
 type TNote = {
   tone: Tone;
-  modifier?: Modifier;
+  modifier?: NoteModifier;
   symbol: string;
 };
 type Quality = "Major" | "Minor" | "Augmented" | "Diminished" | "Power";
@@ -87,9 +88,9 @@ type TChord = {
 
 class Note implements TNote {
   tone: Tone;
-  modifier: Modifier = undefined;
+  modifier: NoteModifier = undefined;
 
-  constructor(tone: Tone, modifier?: Modifier) {
+  constructor(tone: Tone, modifier?: NoteModifier) {
     this.tone = tone;
     this.modifier = modifier;
   }
@@ -102,10 +103,40 @@ class Note implements TNote {
 class Chord implements TChord {
   root: Note;
   quality: Quality;
+  private _intervals?: Interval[] = undefined;
 
   constructor(root: Note, quality: Quality) {
     this.root = root;
     this.quality = quality;
+  }
+
+  get intervals(): Interval[] {
+    if (!this._intervals) {
+      let result = MAJOR;
+      const modifiers: Modifier[] = [this.qualityModifier()];
+      for (const f of modifiers) {
+        result = f(result);
+      }
+      this._intervals = result;
+    }
+    return this._intervals;
+  }
+
+  private qualityModifier() {
+    switch (this.quality) {
+      case "Major":
+        return identity;
+      case "Minor":
+        return minorThird;
+      case "Augmented":
+        return augmentedFifth;
+      case "Diminished":
+        return diminishedFifth;
+      case "Power":
+        return power;
+      default:
+        throw new Error("Unhandled quality case.");
+    }
   }
 }
 
@@ -130,7 +161,7 @@ function evaluateQuality(quality: FullParsedQuality): Quality {
 export function evaluate(chord: ParsedChord): Chord {
   if (chord == null) throw Error("Parsed chord is null.");
   const { root: _root, quality: _quality } = chord;
-  const root = new Note(<Tone>_root.tone, <Modifier>_root.modifier);
+  const root = new Note(<Tone>_root.tone, <NoteModifier>_root.modifier);
   const quality = evaluateQuality(_quality);
   return new Chord(root, quality);
 }

@@ -1,4 +1,5 @@
 import { parse } from "./parser.ts";
+import type { chord } from "./parser.ts";
 import type { ParseResult } from "./parser.ts";
 import { evaluate } from "./chords.ts";
 
@@ -28,7 +29,7 @@ function build(_xxs: string[][]): string[] {
 const TONES = ["C", "D", "E", "F", "G", "A", "B"];
 const TONE_MODIFIERS = ["", "#", "b"];
 const NOTES = build([TONES, TONE_MODIFIERS]);
-const QUALITIES = ["", "maj", "M", "min", "m", "o", "dim", "+", "aug"];
+const QUALITIES = ["", "maj", "M", "min", "m", "o", "dim", "+", "aug", "5"];
 const chords = build([NOTES, QUALITIES]);
 console.log(chords);
 
@@ -51,10 +52,15 @@ function testAll(chordStrings: string[]) {
   );
 }
 
-// testAll(chords);
+testAll(chords);
 
 // Test evaluate function
 const manualTests = ["C", "C#", "Cbaug", "Cbm", "C5"];
-for (const result of manualTests.map(parse)) {
-  if (result.ast) console.log(evaluate(result.ast));
-}
+const evaluatedChords = manualTests
+  .map(parse)
+  .filter((r) => r.ast != null)
+  .map((r) => evaluate(<chord>r.ast))
+  .forEach((c) => console.log(c, c.intervals));
+// for (const result of manualTests.map(parse)) {
+//   if (result.ast) console.log(evaluate(result.ast));
+// }
