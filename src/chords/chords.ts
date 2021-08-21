@@ -1,5 +1,5 @@
 // Hardcode intervals
-type Interval = number;
+export type Interval = number;
 const UNISON = 0,
   MINOR_SECOND = 1,
   MAJOR_SECOND = 2,
@@ -24,17 +24,23 @@ const UNISON = 0,
   MAJOR_THIRTEENTH = OCTAVE + MAJOR_SIXTH;
 
 // Define chord type (array)
-type Chord = Interval[];
+export type Chord = Interval[];
 
 // Helper function
 function replace(chord: Chord, remove: Interval, replacement: Interval) {
   return chord.map((interval) => (interval == remove ? replacement : interval));
 }
 
-// Write chord qualities (major, minor, augment, diminished) as chords
+function remove(chord: Chord, remove: Interval) {
+  const removeIndex = chord.find((i) => i == remove);
+  return removeIndex ? chord.splice(removeIndex, 1) : chord;
+}
+
+// Write chord qualities (major, minor, augment, diminished, power) as chords
 const MAJOR = [UNISON, MAJOR_THIRD, PERFECT_FIFTH];
 const MINOR = [UNISON, MINOR_THIRD, PERFECT_FIFTH];
-const DIMINSHED = replace(MINOR, PERFECT_FIFTH, TRITONE);
+const POWER = remove(MAJOR, MAJOR_THIRD);
+const DIMINISHED = replace(MINOR, PERFECT_FIFTH, TRITONE);
 const AUGMENTED = replace(MAJOR, PERFECT_FIFTH, MINOR_SIXTH);
 
 // Write chord added intervals (major sixth, major/minor seventh, major 9th/11th/13th)
