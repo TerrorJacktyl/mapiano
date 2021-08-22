@@ -118,6 +118,12 @@ class Chord implements TChord {
     this.quality = quality;
   }
 
+  get name(): string {
+    const { root, quality } = this;
+    const names = [root.symbol, quality];
+    return names.join(" ");
+  }
+
   get intervals(): Interval[] {
     if (!this._intervals) {
       let result = MAJOR;

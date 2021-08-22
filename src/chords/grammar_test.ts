@@ -60,7 +60,7 @@ const evaluatedChords = manualTests
   .map(parse)
   .filter((r) => r.ast != null)
   .map((r) => evaluate(<chord>r.ast))
-  .forEach((c) => console.log(c, c.intervals));
+  .forEach((c) => console.log(c, c.name, c.intervals));
 
 // To compile grammar and run tests
 // tspeg grammar.peg parser.ts && deno run grammar_test.ts
