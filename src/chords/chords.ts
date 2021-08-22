@@ -47,10 +47,18 @@ function add(ints: Interval[], newInterval: Interval) {
   return ints;
 }
 
-// When constructing an interval from a chord symbol, always start with a major
+/**
+ * Modifiers
+ * (Interval) modifiers are used to construct interval lists for different chord types.
+ * The idea is to construct chords how you might as a human: start with the major chord
+ * and then modify or extend it to create other chords. That way, give a chord with a
+ * root, quality, extensions etc. we can generate the keys that correspond to that
+ * chord.
+ */
+
 const MAJOR = [Interval.UNISON, Interval.MAJOR_THIRD, Interval.PERFECT_FIFTH];
 
-// Write chord qualities (major, minor, augment, diminished, power) as chords
+// Chord qualities (major, minor, augment, diminished, power) as chords
 type Modifier = (ints: Interval[]) => Interval[];
 const identity = (ints: Interval[]) => ints;
 const minorThird = (ints: Interval[]) =>
