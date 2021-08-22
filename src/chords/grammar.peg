@@ -1,12 +1,16 @@
+// This grammar defines chord symbol strings according to this structure:
+// https://www.stringkick.com/blog-lessons/chord-names-symbols/#section3
 start := chord
 tone := 'C' | 'D' | 'E' | 'F' | 'G' | 'A' | 'B'
 note := tone=tone modifier={'#' | 'b'}?
 root := note
-major := major={'maj' | 'M'}
-major2 := major=''
-minor := minor={'min' | 'm'}
-augmented := augmented={'\+' | 'aug'}
 diminished := diminished={'o' | 'dim'}
+augmented := augmented={'\+' | 'aug'}
+half_diminished := half_diminished={'m7b5' | 'ø'}
+major := major={'maj' | 'M'}
+minor := minor={'min' | 'm'}
+sus := sus={'sus2' | 'sus4'}
 power := power={'5'}
-quality := power | diminished | augmented | major | minor | major2
+major2 := major=''
+quality := diminished | augmented | half_diminished | major | minor | sus | power | major2
 chord := root=root quality=quality $

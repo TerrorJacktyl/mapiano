@@ -29,7 +29,22 @@ function build(_xxs: string[][]): string[] {
 const TONES = ["C", "D", "E", "F", "G", "A", "B"];
 const TONE_MODIFIERS = ["", "#", "b"];
 const NOTES = build([TONES, TONE_MODIFIERS]);
-const QUALITIES = ["", "maj", "M", "min", "m", "o", "dim", "+", "aug", "5"];
+const QUALITIES = [
+  "",
+  "maj",
+  "M",
+  "min",
+  "m",
+  "o",
+  "dim",
+  "+",
+  "aug",
+  "5",
+  "sus2",
+  "sus4",
+  "m7b5",
+  "ø",
+];
 const chords = build([NOTES, QUALITIES]);
 console.log(chords);
 
@@ -55,7 +70,16 @@ function testAll(chordStrings: string[]) {
 testAll(chords);
 
 // Test evaluate function
-const manualTests = ["C", "C#", "Cbaug", "Cbm", "C5"];
+const manualTests = [
+  "C",
+  "C#",
+  "Cbaug",
+  "Cbm",
+  "C5",
+  "Csus2",
+  "Csus4",
+  "Cm7b5",
+];
 const evaluatedChords = manualTests
   .map(parse)
   .filter((r) => r.ast != null)

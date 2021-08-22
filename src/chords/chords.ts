@@ -16,6 +16,7 @@ enum Interval {
   PERFECT_FIFTH = 7,
   MINOR_SIXTH = 8,
   MAJOR_SIXTH = 9,
+  DIMINISHED_SEVENTH = 9,
   MINOR_SEVENTH = 10,
   MAJOR_SEVENTH = 11,
   OCTAVE = 12,
@@ -67,8 +68,13 @@ const augmentedFifth = (ints: Interval[]) =>
   replace(ints, Interval.PERFECT_FIFTH, Interval.MINOR_SIXTH);
 const diminishedFifth = (ints: Interval[]) =>
   replace(ints, Interval.PERFECT_FIFTH, Interval.TRITONE);
+const minorSeventh = (ints: Interval[]) => add(ints, Interval.MINOR_SEVENTH);
+const diminishedSeventh = (ints: Interval[]) =>
+  add(ints, Interval.DIMINISHED_SEVENTH);
 const power = (ints: Interval[]) =>
   remove(ints, [Interval.MAJOR_THIRD, Interval.MINOR_THIRD]);
+const sus2 = (ints: Interval[]) => add(power(ints), Interval.MAJOR_SECOND);
+const sus4 = (ints: Interval[]) => add(power(ints), Interval.PERFECT_FOURTH);
 
 const MINOR = minorThird(MAJOR);
 const AUGMENTED = augmentedFifth(MAJOR);
@@ -88,7 +94,15 @@ type TNote = {
   modifier?: NoteModifier;
   symbol: string;
 };
-type Quality = "Major" | "Minor" | "Augmented" | "Diminished" | "Power";
+type Quality =
+  | "Major"
+  | "Minor"
+  | "Augmented"
+  | "Diminished"
+  | "Half Diminished"
+  | "Power"
+  | "Suspended 2nd"
+  | "Suspended 4th";
 type TChord = {
   root: Note;
   quality: Quality;
@@ -149,7 +163,7 @@ class Chord implements TChord {
       case "Power":
         return power;
       default:
-        throw new Error("Unhandled quality case.");
+        throw new Error(`Unhandled quality case: ${this.quality}`);
     }
   }
 }
@@ -161,7 +175,10 @@ type FullParsedQuality = ParsedQuality & {
   minor?: string;
   augmented?: string;
   diminished?: string;
+  half_diminished?: string;
   power?: string;
+  sus2?: string;
+  sus4?: string;
 };
 
 function evaluateQuality(quality: FullParsedQuality): Quality {
@@ -169,7 +186,12 @@ function evaluateQuality(quality: FullParsedQuality): Quality {
   if (quality.minor) return "Minor";
   if (quality.augmented) return "Augmented";
   if (quality.diminished) return "Diminished";
-  return "Power";
+  if (quality.half_diminished) return "Half Diminished";
+  if (quality.sus2) return "Suspended 2nd";
+  if (quality.sus4) return "Suspended 4th";
+  if (quality.power) return "Power";
+  // TO DO: figure out how to paramterise error messages in TS
+  throw new Error("Unhandled quality:" + new String(quality));
 }
 
 export function evaluate(chord: ParsedChord): Chord {
