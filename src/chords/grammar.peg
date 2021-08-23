@@ -6,11 +6,13 @@ note := tone=tone modifier={'#' | 'b'}?
 root := note
 diminished := diminished={'o' | 'dim'}
 augmented := augmented={'\+' | 'aug'}
-half_diminished := half_diminished={'m7b5' | 'ø'}
+// half_diminished := half_diminished={'m7b5' | 'ø'}
 major := major={'maj' | 'M'}
 minor := minor={'min' | 'm'}
-sus := sus={'sus2' | 'sus4'}
+sus2 := sus2='sus2'
+sus4 := sus4='sus4'
+sus := sus2 | sus4
 power := power={'5'}
 major2 := major=''
-quality := diminished | augmented | half_diminished | major | minor | sus | power | major2
+quality := diminished | augmented | major | minor | sus | power | major2
 chord := root=root quality=quality $

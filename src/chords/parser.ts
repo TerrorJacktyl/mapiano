@@ -8,13 +8,15 @@
 * root := note
 * diminished := diminished={'o' | 'dim'}
 * augmented := augmented={'\+' | 'aug'}
-* half_diminished := half_diminished={'m7b5' | 'ø'}
+* // half_diminished := half_diminished={'m7b5' | 'ø'}
 * major := major={'maj' | 'M'}
 * minor := minor={'min' | 'm'}
-* sus := sus={'sus2' | 'sus4'}
+* sus2 := sus2='sus2'
+* sus4 := sus4='sus4'
+* sus := sus2 | sus4
 * power := power={'5'}
 * major2 := major=''
-* quality := diminished | augmented | half_diminished | major | minor | sus | power | major2
+* quality := diminished | augmented | major | minor | sus | power | major2
 * chord := root=root quality=quality $
 */
 type Nullable<T> = T | null;
@@ -41,18 +43,16 @@ export enum ASTKinds {
     augmented = "augmented",
     augmented_$0_1 = "augmented_$0_1",
     augmented_$0_2 = "augmented_$0_2",
-    half_diminished = "half_diminished",
-    half_diminished_$0_1 = "half_diminished_$0_1",
-    half_diminished_$0_2 = "half_diminished_$0_2",
     major = "major",
     major_$0_1 = "major_$0_1",
     major_$0_2 = "major_$0_2",
     minor = "minor",
     minor_$0_1 = "minor_$0_1",
     minor_$0_2 = "minor_$0_2",
-    sus = "sus",
-    sus_$0_1 = "sus_$0_1",
-    sus_$0_2 = "sus_$0_2",
+    sus2 = "sus2",
+    sus4 = "sus4",
+    sus_1 = "sus_1",
+    sus_2 = "sus_2",
     power = "power",
     power_$0 = "power_$0",
     major2 = "major2",
@@ -63,7 +63,6 @@ export enum ASTKinds {
     quality_5 = "quality_5",
     quality_6 = "quality_6",
     quality_7 = "quality_7",
-    quality_8 = "quality_8",
     chord = "chord",
     $EOF = "$EOF",
 }
@@ -99,13 +98,6 @@ export interface augmented {
 export type augmented_$0 = augmented_$0_1 | augmented_$0_2;
 export type augmented_$0_1 = string;
 export type augmented_$0_2 = string;
-export interface half_diminished {
-    kind: ASTKinds.half_diminished;
-    half_diminished: half_diminished_$0;
-}
-export type half_diminished_$0 = half_diminished_$0_1 | half_diminished_$0_2;
-export type half_diminished_$0_1 = string;
-export type half_diminished_$0_2 = string;
 export interface major {
     kind: ASTKinds.major;
     major: major_$0;
@@ -120,13 +112,17 @@ export interface minor {
 export type minor_$0 = minor_$0_1 | minor_$0_2;
 export type minor_$0_1 = string;
 export type minor_$0_2 = string;
-export interface sus {
-    kind: ASTKinds.sus;
-    sus: sus_$0;
+export interface sus2 {
+    kind: ASTKinds.sus2;
+    sus2: string;
 }
-export type sus_$0 = sus_$0_1 | sus_$0_2;
-export type sus_$0_1 = string;
-export type sus_$0_2 = string;
+export interface sus4 {
+    kind: ASTKinds.sus4;
+    sus4: string;
+}
+export type sus = sus_1 | sus_2;
+export type sus_1 = sus2;
+export type sus_2 = sus4;
 export interface power {
     kind: ASTKinds.power;
     power: power_$0;
@@ -136,15 +132,14 @@ export interface major2 {
     kind: ASTKinds.major2;
     major: string;
 }
-export type quality = quality_1 | quality_2 | quality_3 | quality_4 | quality_5 | quality_6 | quality_7 | quality_8;
+export type quality = quality_1 | quality_2 | quality_3 | quality_4 | quality_5 | quality_6 | quality_7;
 export type quality_1 = diminished;
 export type quality_2 = augmented;
-export type quality_3 = half_diminished;
-export type quality_4 = major;
-export type quality_5 = minor;
-export type quality_6 = sus;
-export type quality_7 = power;
-export type quality_8 = major2;
+export type quality_3 = major;
+export type quality_4 = minor;
+export type quality_5 = sus;
+export type quality_6 = power;
+export type quality_7 = major2;
 export interface chord {
     kind: ASTKinds.chord;
     root: root;
@@ -282,31 +277,6 @@ export class Parser {
     public matchaugmented_$0_2($$dpth: number, $$cr?: ErrorTracker): Nullable<augmented_$0_2> {
         return this.regexAccept(String.raw`(?:aug)`, $$dpth + 1, $$cr);
     }
-    public matchhalf_diminished($$dpth: number, $$cr?: ErrorTracker): Nullable<half_diminished> {
-        return this.run<half_diminished>($$dpth,
-            () => {
-                let $scope$half_diminished: Nullable<half_diminished_$0>;
-                let $$res: Nullable<half_diminished> = null;
-                if (true
-                    && ($scope$half_diminished = this.matchhalf_diminished_$0($$dpth + 1, $$cr)) !== null
-                ) {
-                    $$res = {kind: ASTKinds.half_diminished, half_diminished: $scope$half_diminished};
-                }
-                return $$res;
-            });
-    }
-    public matchhalf_diminished_$0($$dpth: number, $$cr?: ErrorTracker): Nullable<half_diminished_$0> {
-        return this.choice<half_diminished_$0>([
-            () => this.matchhalf_diminished_$0_1($$dpth + 1, $$cr),
-            () => this.matchhalf_diminished_$0_2($$dpth + 1, $$cr),
-        ]);
-    }
-    public matchhalf_diminished_$0_1($$dpth: number, $$cr?: ErrorTracker): Nullable<half_diminished_$0_1> {
-        return this.regexAccept(String.raw`(?:m7b5)`, $$dpth + 1, $$cr);
-    }
-    public matchhalf_diminished_$0_2($$dpth: number, $$cr?: ErrorTracker): Nullable<half_diminished_$0_2> {
-        return this.regexAccept(String.raw`(?:ø)`, $$dpth + 1, $$cr);
-    }
     public matchmajor($$dpth: number, $$cr?: ErrorTracker): Nullable<major> {
         return this.run<major>($$dpth,
             () => {
@@ -357,30 +327,43 @@ export class Parser {
     public matchminor_$0_2($$dpth: number, $$cr?: ErrorTracker): Nullable<minor_$0_2> {
         return this.regexAccept(String.raw`(?:m)`, $$dpth + 1, $$cr);
     }
-    public matchsus($$dpth: number, $$cr?: ErrorTracker): Nullable<sus> {
-        return this.run<sus>($$dpth,
+    public matchsus2($$dpth: number, $$cr?: ErrorTracker): Nullable<sus2> {
+        return this.run<sus2>($$dpth,
             () => {
-                let $scope$sus: Nullable<sus_$0>;
-                let $$res: Nullable<sus> = null;
+                let $scope$sus2: Nullable<string>;
+                let $$res: Nullable<sus2> = null;
                 if (true
-                    && ($scope$sus = this.matchsus_$0($$dpth + 1, $$cr)) !== null
+                    && ($scope$sus2 = this.regexAccept(String.raw`(?:sus2)`, $$dpth + 1, $$cr)) !== null
                 ) {
-                    $$res = {kind: ASTKinds.sus, sus: $scope$sus};
+                    $$res = {kind: ASTKinds.sus2, sus2: $scope$sus2};
                 }
                 return $$res;
             });
     }
-    public matchsus_$0($$dpth: number, $$cr?: ErrorTracker): Nullable<sus_$0> {
-        return this.choice<sus_$0>([
-            () => this.matchsus_$0_1($$dpth + 1, $$cr),
-            () => this.matchsus_$0_2($$dpth + 1, $$cr),
+    public matchsus4($$dpth: number, $$cr?: ErrorTracker): Nullable<sus4> {
+        return this.run<sus4>($$dpth,
+            () => {
+                let $scope$sus4: Nullable<string>;
+                let $$res: Nullable<sus4> = null;
+                if (true
+                    && ($scope$sus4 = this.regexAccept(String.raw`(?:sus4)`, $$dpth + 1, $$cr)) !== null
+                ) {
+                    $$res = {kind: ASTKinds.sus4, sus4: $scope$sus4};
+                }
+                return $$res;
+            });
+    }
+    public matchsus($$dpth: number, $$cr?: ErrorTracker): Nullable<sus> {
+        return this.choice<sus>([
+            () => this.matchsus_1($$dpth + 1, $$cr),
+            () => this.matchsus_2($$dpth + 1, $$cr),
         ]);
     }
-    public matchsus_$0_1($$dpth: number, $$cr?: ErrorTracker): Nullable<sus_$0_1> {
-        return this.regexAccept(String.raw`(?:sus2)`, $$dpth + 1, $$cr);
+    public matchsus_1($$dpth: number, $$cr?: ErrorTracker): Nullable<sus_1> {
+        return this.matchsus2($$dpth + 1, $$cr);
     }
-    public matchsus_$0_2($$dpth: number, $$cr?: ErrorTracker): Nullable<sus_$0_2> {
-        return this.regexAccept(String.raw`(?:sus4)`, $$dpth + 1, $$cr);
+    public matchsus_2($$dpth: number, $$cr?: ErrorTracker): Nullable<sus_2> {
+        return this.matchsus4($$dpth + 1, $$cr);
     }
     public matchpower($$dpth: number, $$cr?: ErrorTracker): Nullable<power> {
         return this.run<power>($$dpth,
@@ -420,7 +403,6 @@ export class Parser {
             () => this.matchquality_5($$dpth + 1, $$cr),
             () => this.matchquality_6($$dpth + 1, $$cr),
             () => this.matchquality_7($$dpth + 1, $$cr),
-            () => this.matchquality_8($$dpth + 1, $$cr),
         ]);
     }
     public matchquality_1($$dpth: number, $$cr?: ErrorTracker): Nullable<quality_1> {
@@ -430,21 +412,18 @@ export class Parser {
         return this.matchaugmented($$dpth + 1, $$cr);
     }
     public matchquality_3($$dpth: number, $$cr?: ErrorTracker): Nullable<quality_3> {
-        return this.matchhalf_diminished($$dpth + 1, $$cr);
-    }
-    public matchquality_4($$dpth: number, $$cr?: ErrorTracker): Nullable<quality_4> {
         return this.matchmajor($$dpth + 1, $$cr);
     }
-    public matchquality_5($$dpth: number, $$cr?: ErrorTracker): Nullable<quality_5> {
+    public matchquality_4($$dpth: number, $$cr?: ErrorTracker): Nullable<quality_4> {
         return this.matchminor($$dpth + 1, $$cr);
     }
-    public matchquality_6($$dpth: number, $$cr?: ErrorTracker): Nullable<quality_6> {
+    public matchquality_5($$dpth: number, $$cr?: ErrorTracker): Nullable<quality_5> {
         return this.matchsus($$dpth + 1, $$cr);
     }
-    public matchquality_7($$dpth: number, $$cr?: ErrorTracker): Nullable<quality_7> {
+    public matchquality_6($$dpth: number, $$cr?: ErrorTracker): Nullable<quality_6> {
         return this.matchpower($$dpth + 1, $$cr);
     }
-    public matchquality_8($$dpth: number, $$cr?: ErrorTracker): Nullable<quality_8> {
+    public matchquality_7($$dpth: number, $$cr?: ErrorTracker): Nullable<quality_7> {
         return this.matchmajor2($$dpth + 1, $$cr);
     }
     public matchchord($$dpth: number, $$cr?: ErrorTracker): Nullable<chord> {

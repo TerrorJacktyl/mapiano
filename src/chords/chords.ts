@@ -99,7 +99,7 @@ type Quality =
   | "Minor"
   | "Augmented"
   | "Diminished"
-  | "Half Diminished"
+  // | "Half Diminished"
   | "Power"
   | "Suspended 2nd"
   | "Suspended 4th";
@@ -160,10 +160,16 @@ class Chord implements TChord {
         return augmentedFifth;
       case "Diminished":
         return diminishedFifth;
+      // case "Half Diminished":
+      //   return;
       case "Power":
         return power;
+      case "Suspended 2nd":
+        return sus2;
+      case "Suspended 4th":
+        return sus4;
       default:
-        throw new Error(`Unhandled quality case: ${this.quality}`);
+        throw `Unhandled quality case: ${this.quality}`;
     }
   }
 }
@@ -186,12 +192,11 @@ function evaluateQuality(quality: FullParsedQuality): Quality {
   if (quality.minor) return "Minor";
   if (quality.augmented) return "Augmented";
   if (quality.diminished) return "Diminished";
-  if (quality.half_diminished) return "Half Diminished";
+  // if (quality.half_diminished) return "Half Diminished";
+  if (quality.power) return "Power";
   if (quality.sus2) return "Suspended 2nd";
   if (quality.sus4) return "Suspended 4th";
-  if (quality.power) return "Power";
-  // TO DO: figure out how to paramterise error messages in TS
-  throw new Error("Unhandled quality:" + new String(quality));
+  throw "Unhandled quality:" + JSON.stringify(quality);
 }
 
 export function evaluate(chord: ParsedChord): Chord {
