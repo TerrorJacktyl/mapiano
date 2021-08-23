@@ -1,7 +1,4 @@
-import type {
-  chord as ParsedChord,
-  quality as ParsedQuality,
-} from "./parser.ts";
+import type { chord as ParsedChord, quality as ParsedQuality } from "./parser";
 
 // Hardcode intervals
 
@@ -91,7 +88,7 @@ type Flat = "b";
 type NoteModifier = undefined | Sharp | Flat;
 type TNote = {
   tone: Tone;
-  modifier?: NoteModifier;
+  modifier: NoteModifier;
   symbol: string;
 };
 type Quality =
@@ -122,7 +119,7 @@ class Note implements TNote {
   }
 }
 
-class Chord implements TChord {
+export class Chord implements TChord {
   root: Note;
   quality: Quality;
   private _intervals?: Interval[] = undefined;

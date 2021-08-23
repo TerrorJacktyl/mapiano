@@ -1,7 +1,7 @@
-import { parse } from "./parser.ts";
-import type { chord } from "./parser.ts";
-import type { ParseResult } from "./parser.ts";
-import { evaluate } from "./chords.ts";
+import { parse } from "./parser";
+import type { chord } from "./parser";
+import type { ParseResult } from "./parser";
+import { evaluate } from "./chords";
 
 // Helper functions
 function zip<X, Y>(xs: X[], ys: Y[]) {

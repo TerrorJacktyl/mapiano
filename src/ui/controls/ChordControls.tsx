@@ -28,7 +28,7 @@ export function ChordControls(props: Props) {
             type="text"
             name="chordName"
             onChange={(e: React.FormEvent<HTMLInputElement>) =>
-              props.onChangeSymbol(e.currentTarget.value)
+              onChange(e.currentTarget.value)
             }
           />
         </p>
