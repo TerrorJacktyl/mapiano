@@ -1,9 +1,11 @@
 .ChordControlsView {
   border: 2px solid gray;
+  border-radius: 0.5em;
   margin: 3%;
   padding: min(2%, 10px);
   box-sizing: border-box;
-  width: max(300px, 40vw);
+  width: max(300px, 80vw);
+  max-width: 600px;
 }
 
 form {
