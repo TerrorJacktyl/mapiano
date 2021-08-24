@@ -1,5 +1,5 @@
 import React from "react";
-import { Octave, OctaveView } from "./ui/octave/Octave";
+import { createOctave as Octave, OctaveView } from "./ui/octave/Octave";
 import { ChordControls } from "./ui/controls/ChordControls";
 import "./App.css";
 
@@ -17,7 +17,6 @@ function App() {
         onChangeSymbol={(symbol: string) => {}}
       ></ChordControls>
       <OctaveView>
-        <Octave />
         <Octave />
       </OctaveView>
     </div>
