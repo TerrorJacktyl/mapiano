@@ -26,4 +26,6 @@
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   grid-template-rows: 100%;
+  /* Allow clicking to register on the white keys behind the blacks keys' grid */
+  pointer-events: none;
 }
