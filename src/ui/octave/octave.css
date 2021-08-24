@@ -12,14 +12,14 @@
   position: relative;
 }
 
-.whites {
+.WhiteKeys {
   width: 100%;
   height: 100%;
   display: flex;
   flex-flow: row nowrap;
 }
 
-.sharps {
+.BlackKeys {
   width: 100%;
   height: 60%;
   position: absolute;

@@ -1,5 +1,5 @@
 import React from "react";
-import { createOctave as Octave, OctaveView } from "./ui/octave/Octave";
+import { createOctave, OctaveView } from "./ui/octave/Octave";
 import { ChordControls } from "./ui/controls/ChordControls";
 import "./App.css";
 
@@ -10,6 +10,8 @@ function App() {
     notes: ["E", "G", "C"],
   };
 
+  const Octaves = [1, 2].map((_) => createOctave());
+
   return (
     <div className="App">
       <ChordControls
@@ -17,7 +19,9 @@ function App() {
         onChangeSymbol={(symbol: string) => {}}
       ></ChordControls>
       <OctaveView>
-        <Octave />
+        {Octaves.map((Octave, i) => (
+          <Octave key={i} />
+        ))}
       </OctaveView>
     </div>
   );
