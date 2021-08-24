@@ -3,21 +3,21 @@ import { NoteState, OctaveStore } from "./OctaveStore";
 
 export class OctavePresenter {
   constructor(private store: OctaveStore) {
-    const cMinor = [0, 3, 7];
-    setTimeout(() => {
-      this.mark(cMinor);
-    }, 1000);
-    setTimeout(() => {
-      this.unmarkAll();
-    }, 3000);
+    // const cMinor = [0, 3, 7];
+    // setTimeout(() => {
+    //   this.mark(cMinor);
+    // }, 1000);
+    // setTimeout(() => {
+    //   this.unmarkAll();
+    // }, 3000);
   }
 
   public mark(indexesToMark: number[]) {
     indexesToMark.forEach((i) => {
-      if (!this.isValidIndex(i))
-        throw Error(
-          `The index ${i} is invalid (not an integer between [0,11]).`
-        );
+      // if (!this.isValidIndex(i))
+      //   throw Error(
+      //     `The index ${i} is invalid (not an integer between [0,11]).`
+      //   );
       runInAction(() => (this.store.notes[i].isMarked = true));
     });
   }
@@ -33,7 +33,7 @@ export class OctavePresenter {
   }
 
   @action
-  private unmarkAll() {
+  public unmarkAll() {
     this.store.notes.forEach((noteState) =>
       runInAction(() => (noteState.isMarked = false))
     );

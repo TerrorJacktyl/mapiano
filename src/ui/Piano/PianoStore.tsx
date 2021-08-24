@@ -1,19 +1,16 @@
+import { observable } from "mobx";
 import { OctaveStore } from "./Octave/OctaveStore";
 
-const naturalNumber = (i: number) => i % 1 === 0 && 0 <= i;
+type Octave = {
+  store: OctaveStore;
+  mark: (indexesToMark: number[]) => void;
+  unmarkAll: () => void;
+};
 
-class PianoStore {
-  octaves: OctaveStore[];
+export class PianoStore {
+  @observable octaves: Octave[];
 
-  constructor(initialNumberOfOctaves: number) {
-    if (!naturalNumber(initialNumberOfOctaves)) {
-      throw Error(
-        `Number ${initialNumberOfOctaves} is not a natural number (i.e. 1,2,3,..).`
-      );
-    }
-
-    this.octaves = [...Array(initialNumberOfOctaves)].map(
-      (_) => new OctaveStore()
-    );
+  constructor(octaves: Octave[]) {
+    this.octaves = observable(octaves);
   }
 }

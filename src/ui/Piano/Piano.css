@@ -1,0 +1,6 @@
+.PianoView {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  width: max(95%, 300px);
+}

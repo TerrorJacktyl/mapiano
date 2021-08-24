@@ -1,10 +1,26 @@
 import { observable } from "mobx";
-import { Note } from "./Octave";
 
 export type NoteState = {
   note: string;
   isMarked: boolean;
 };
+
+/**
+ * This Note type is used to provide a canonical and human-friendly representation for indexing the notes in an octave's state.
+ */
+export type Note =
+  | "C"
+  | "C#"
+  | "D"
+  | "D#"
+  | "E"
+  | "F"
+  | "F#"
+  | "G"
+  | "G#"
+  | "A"
+  | "A#"
+  | "B";
 
 export const NOTES: Note[] = [
   "C",

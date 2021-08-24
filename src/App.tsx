@@ -3,6 +3,7 @@ import { createOctave } from "./ui/Piano/Octave/Octave";
 import { PianoView } from "./ui/Piano/PianoView";
 import { ChordControls } from "./ui/controls/ChordControls";
 import "./App.css";
+import { createPiano } from "./ui/Piano/Piano";
 
 function App() {
   const cMajorInversionE = {
@@ -11,7 +12,9 @@ function App() {
     notes: ["E", "G", "C"],
   };
 
-  const Octaves = [1, 2].map((_) => createOctave()["Octave"]);
+  // const Octaves = [1, 2].map((_) => createOctave()["Octave"]);
+
+  const Piano = createPiano();
 
   return (
     <div className="App">
@@ -19,11 +22,12 @@ function App() {
         chord={cMajorInversionE}
         onChangeSymbol={(symbol: string) => {}}
       ></ChordControls>
-      <PianoView>
+      <Piano></Piano>
+      {/* <PianoView>
         {Octaves.map((Octave, i) => (
           <Octave key={i} />
         ))}
-      </PianoView>
+      </PianoView> */}
     </div>
   );
 }

@@ -4,23 +4,6 @@ import { OctaveStore } from "./OctaveStore";
 import { OctavePresenter } from "./OctavePresenter";
 import { OctaveView, BlackKeys, WhiteKeys } from "./OctaveView";
 
-/**
- * A Note enum is used to provide a canonical and human-friendly representation for indexing the notes in an octave's state.
- */
-export type Note =
-  | "C"
-  | "C#"
-  | "D"
-  | "D#"
-  | "E"
-  | "F"
-  | "F#"
-  | "G"
-  | "G#"
-  | "A"
-  | "A#"
-  | "B";
-
 const NUMBER_OF_NOTES_IN_OCTAVE = 12;
 
 const isKeySharp = (note: string) => note.includes("#");
@@ -31,7 +14,7 @@ export const createOctave = () => {
 
   const { notes } = store;
 
-  const { mark } = presenter;
+  const { mark, unmarkAll } = presenter;
 
   const Octave = observer(() => (
     <OctaveView>
@@ -73,5 +56,5 @@ export const createOctave = () => {
     </OctaveView>
   ));
 
-  return { Octave, mark };
+  return { Octave, store, mark, unmarkAll };
 };
