@@ -1,5 +1,6 @@
 import React from "react";
-import { createOctave, OctaveContainer } from "./ui/octave/Octave";
+import { createOctave } from "./ui/Piano/Octave/Octave";
+import { PianoView } from "./ui/Piano/PianoView";
 import { ChordControls } from "./ui/controls/ChordControls";
 import "./App.css";
 
@@ -10,7 +11,7 @@ function App() {
     notes: ["E", "G", "C"],
   };
 
-  const Octaves = [1, 2].map((_) => createOctave());
+  const Octaves = [1, 2].map((_) => createOctave()["Octave"]);
 
   return (
     <div className="App">
@@ -18,11 +19,11 @@ function App() {
         chord={cMajorInversionE}
         onChangeSymbol={(symbol: string) => {}}
       ></ChordControls>
-      <OctaveContainer>
+      <PianoView>
         {Octaves.map((Octave, i) => (
           <Octave key={i} />
         ))}
-      </OctaveContainer>
+      </PianoView>
     </div>
   );
 }

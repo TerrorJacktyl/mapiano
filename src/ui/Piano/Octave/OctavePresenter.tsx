@@ -1,5 +1,4 @@
 import { action, runInAction } from "mobx";
-import { Note } from "./Octave";
 import { NoteState, OctaveStore } from "./OctaveStore";
 
 export class OctavePresenter {
@@ -13,7 +12,7 @@ export class OctavePresenter {
     }, 3000);
   }
 
-  mark(indexesToMark: number[]) {
+  public mark(indexesToMark: number[]) {
     indexesToMark.forEach((i) => {
       if (!this.isValidIndex(i))
         throw Error(
