@@ -1,11 +1,7 @@
-import React from "react";
 import "./Octave.css";
 import { BlackKey, WhiteKey, GhostKey } from "./key/Key";
 import { action, observable, runInAction } from "mobx";
 import { observer } from "mobx-react";
-
-const OCTAVE = "CDEFGAB";
-const SHARPS = "CDFGA";
 
 /**
  * A Note enum is used to provide a canonical and human-friendly representation for indexing the notes in an octave's state.
@@ -27,14 +23,13 @@ enum Note {
 
 const NUMBER_OF_NOTES_IN_OCTAVE = 12;
 const NOTES = [...Array(NUMBER_OF_NOTES_IN_OCTAVE)].map((_, i) => Note[i]);
-const WHITE_KEYS = OCTAVE.split("");
-const SHARP_KEYS = OCTAVE.split("");
+const isKeySharp = (note: string) => note.includes("#");
 
 const ONCLICK: () => any = () => {};
 
 type NoteState = {
   note: string;
-  isMarked: Boolean;
+  isMarked: boolean;
 };
 
 class OctaveStore {
@@ -56,28 +51,36 @@ class OctavePresenter {
     }, 3000);
   }
 
-  // For now, assume that input indexes are valid i.e. natural numbers
-  public mark(indexesToMark: number[]) {
-    for (const i of indexesToMark) {
-      if (i >= NUMBER_OF_NOTES_IN_OCTAVE)
-        throw `The index ${i} does not fall inside [0,11].`;
+  mark(indexesToMark: number[]) {
+    indexesToMark.forEach((i) => {
+      if (!this.isValidIndex(i))
+        throw Error(
+          `The index ${i} is invalid (not an integer between [0,11]).`
+        );
       runInAction(() => (this.store.notes[i].isMarked = true));
-    }
+    });
   }
 
-  public logMarkedKeys() {
-    const markedNotes = this.store.notes;
-    for (let i = 0; i < markedNotes.length; i++) {
-      if (markedNotes[i].isMarked) console.log(`${Note[i]} is marked!`);
-    }
+  private isValidIndex(i: number) {
+    return 0 <= i && i < this.store.notes.length && i % 1 === 0;
+  }
+
+  logMarkedKeys() {
+    this.store.notes.forEach((noteState) => {
+      if (noteState.isMarked) console.log(`${noteState.note} is marked!`);
+    });
   }
 
   @action
   private unmarkAll() {
-    for (let i = 0; i < this.store.notes.length; i++) {
-      runInAction(() => (this.store.notes[i].isMarked = false));
-    }
+    this.store.notes.forEach((noteState) =>
+      runInAction(() => (noteState.isMarked = false))
+    );
   }
+
+  // @action toggleKey(note: Note) {
+  //   this.store.notes[Note.C];
+  // }
 }
 
 export const createOctave = () => {
@@ -94,22 +97,35 @@ export const createOctave = () => {
     <Octave>
       <BlackKeys>
         {[<GhostKey key={"B placeholder"} />].concat(
-          WHITE_KEYS.map((note) => {
-            if (!SHARPS.includes(note)) return <GhostKey key={note} />;
-            const props = { onClick: ONCLICK, isMarked: false };
-            return <BlackKey {...props} key={note}></BlackKey>;
-          })
+          // We want to link the sharp key states and pad the grid with ghost keys
+          notes
+            .filter(
+              (noteState, i) =>
+                isKeySharp(noteState.note) ||
+                !isKeySharp(notes[(i + 1) % 12].note)
+            )
+            .map((noteState) =>
+              isKeySharp(noteState.note) ? (
+                <BlackKey
+                  key={noteState.note}
+                  onClick={ONCLICK}
+                  isMarked={noteState.isMarked}
+                ></BlackKey>
+              ) : (
+                <GhostKey key={noteState.note} />
+              )
+            )
         )}
       </BlackKeys>
       <WhiteKeys>
         {notes
-          .filter((noteState) => !noteState?.note.includes("#"))
+          .filter((noteState) => !isKeySharp(noteState.note))
           .map((noteState) => {
             return (
               <WhiteKey
                 key={noteState.note}
                 onClick={ONCLICK}
-                isMarked={noteState.isMarked.valueOf()}
+                isMarked={noteState.isMarked}
               ></WhiteKey>
             );
           })}
