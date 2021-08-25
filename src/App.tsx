@@ -1,6 +1,3 @@
-import React from "react";
-import { createOctave } from "./ui/Piano/Octave/Octave";
-import { PianoView } from "./ui/Piano/PianoView";
 import { ChordControls } from "./ui/controls/ChordControls";
 import "./App.css";
 import { createPiano } from "./ui/Piano/Piano";

@@ -1,9 +1,10 @@
-import { action, runInAction } from "mobx";
+import { action, autorun, computed, reaction, runInAction } from "mobx";
 import { Chord, Note } from "../../chords/chords";
 import { PianoStore } from "./PianoStore";
 
 const isInteger = (n: number) => n % 1 === 0;
 const positiveModulo = (i: number, n: number) => ((i % n) + n) % n;
+
 export class PianoPresenter {
   constructor(private store: PianoStore) {
     this.store = store;
@@ -15,6 +16,20 @@ export class PianoPresenter {
     setTimeout(() => {
       this.unmarkAll();
     }, 5000);
+
+    // reaction(
+    //   () => this.store.octaves[0].store.notes.map((n) => n.isMarked),
+    //   () => this.findChord
+    // );
+  }
+
+  @computed
+  get findChord() {
+    const pressedNotes = this.store.octaves[0].store.notes
+      .filter((n) => n.isMarked)
+      .map((n) => n.note);
+    console.log(pressedNotes);
+    return pressedNotes.toString();
   }
 
   @action

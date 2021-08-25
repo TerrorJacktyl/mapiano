@@ -3,13 +3,13 @@ import { createOctave } from "./Octave/Octave";
 import { PianoView } from "./PianoView";
 import { PianoStore } from "./PianoStore";
 import { PianoPresenter } from "./PianoPresenter";
+import { observer } from "mobx-react";
 
 export function createPiano() {
   const NUMBER_OCTAVES = 2;
 
-  // make the octaves
-  const octaves = [...Array(2)].map((_) => createOctave());
-  // combine their stores into the piano store
+  // Combine octaves' stores into the piano's store
+  const octaves = [...Array(NUMBER_OCTAVES)].map((_) => createOctave());
   const octaveStores = octaves.map((octave) => ({
     store: octave.store,
     mark: octave.mark,
@@ -17,14 +17,17 @@ export function createPiano() {
   }));
   const store = new PianoStore(octaveStores);
   const presenter = new PianoPresenter(store);
-  // return the whole component
-  return () => (
-    <PianoView>
-      {octaves.map(({ Octave }, i) => (
-        <Octave key={i} />
-      ))}
-    </PianoView>
-  );
+
+  return observer(() => (
+    <>
+      <p>First octave: {presenter.findChord}</p>
+      <PianoView>
+        {octaves.map(({ Octave }, i) => (
+          <Octave key={i} />
+        ))}
+      </PianoView>
+    </>
+  ));
 }
 
 export {};

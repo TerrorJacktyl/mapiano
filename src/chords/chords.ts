@@ -31,14 +31,14 @@ enum Interval {
 
 // Helper functions
 function replace(ints: Interval[], remove: Interval, replacement: Interval) {
-  return ints.map((interval) => (interval == remove ? replacement : interval));
+  return ints.map((interval) => (interval === remove ? replacement : interval));
 }
 function remove(ints: Interval[], removals: Interval[]) {
   return ints.filter((i) => !removals.includes(i));
 }
 
 function add(ints: Interval[], newInterval: Interval) {
-  if (ints.find((i) => i == newInterval)) {
+  if (ints.find((i) => i === newInterval)) {
     return ints;
   }
   ints.push(newInterval);
@@ -195,7 +195,7 @@ type FullParsedQuality = ParsedQuality & {
 };
 
 function evaluateQuality(quality: FullParsedQuality): Quality {
-  if (quality.major || quality.major == "") return "Major";
+  if (quality.major || quality.major === "") return "Major";
   if (quality.minor) return "Minor";
   if (quality.augmented) return "Augmented";
   if (quality.diminished) return "Diminished";
@@ -207,7 +207,7 @@ function evaluateQuality(quality: FullParsedQuality): Quality {
 }
 
 export function evaluate(chord: ParsedChord): Chord {
-  if (chord == null) throw Error("Parsed chord is null.");
+  if (chord === null) throw Error("Parsed chord is null.");
   const { root: _root, quality: _quality } = chord;
   const root = new Note(<Tone>_root.tone, <NoteModifier>_root.modifier);
   const quality = evaluateQuality(_quality);
