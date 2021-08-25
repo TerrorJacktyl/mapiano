@@ -6,7 +6,7 @@ import { PianoPresenter } from "./PianoPresenter";
 import { observer } from "mobx-react";
 
 export function createPiano() {
-  const NUMBER_OCTAVES = 3;
+  const NUMBER_OCTAVES = 2;
 
   // Combine octaves' stores into the piano's store
   const octaves = [...Array(NUMBER_OCTAVES)].map((_) => createOctave());

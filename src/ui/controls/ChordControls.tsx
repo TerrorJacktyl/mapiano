@@ -19,7 +19,7 @@ export function ChordControls(props: Props) {
       <form>
         <p>
           <label>{"Name: "}</label>
-          {props.chord.name}
+          {chord.name}
         </p>
         <p>
           <label>{"Chord: "}</label>

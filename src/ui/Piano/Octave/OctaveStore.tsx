@@ -43,7 +43,7 @@ const DEFAULT_NOTES_STATE = NOTES.map((note) => ({
 }));
 
 export class OctaveStore {
-  @observable notes: NoteState[] = observable(DEFAULT_NOTES_STATE);
+  @observable readonly notes: NoteState[] = observable(DEFAULT_NOTES_STATE);
 
   @computed
   get markedIndexes() {

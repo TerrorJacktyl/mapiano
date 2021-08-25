@@ -1,5 +1,5 @@
-import { ChordControls } from "./ui/controls/ChordControls";
 import "./App.css";
+import { ChordControls } from "./ui/controls/ChordControls";
 import { createPiano } from "./ui/Piano/Piano";
 
 function App() {
@@ -8,8 +8,6 @@ function App() {
     symbol: "C/E",
     notes: ["E", "G", "C"],
   };
-
-  // const Octaves = [1, 2].map((_) => createOctave()["Octave"]);
 
   const Piano = createPiano();
 
@@ -20,11 +18,6 @@ function App() {
         onChangeSymbol={(symbol: string) => {}}
       ></ChordControls>
       <Piano></Piano>
-      {/* <PianoView>
-        {Octaves.map((Octave, i) => (
-          <Octave key={i} />
-        ))}
-      </PianoView> */}
     </div>
   );
 }

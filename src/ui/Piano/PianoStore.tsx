@@ -8,7 +8,7 @@ type Octave = {
 };
 
 export class PianoStore {
-  @observable octaves: Octave[];
+  @observable readonly octaves: Octave[];
 
   constructor(octaves: Octave[]) {
     this.octaves = observable(octaves);
