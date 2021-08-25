@@ -2,17 +2,23 @@
   font-family: "Azeret Mono", monospace;
   font-weight: 200;
   text-align: center;
-  height: 100%;
-  position: absolute;
+  height: 100vh;
   width: 100%;
   display: flex;
+  flex-flow: column nowrap;
   justify-content: center;
+  background-color: pink;
 }
 
 .App h1 {
   font-weight: 500;
-  font-size: xxx-large;
-  position: absolute;
+  font-size: large;
+}
+
+@media (min-width: 500px) {
+  .App h1 {
+    font-size: xxx-large;
+  }
 }
 
 @media (prefers-reduced-motion: no-preference) {
