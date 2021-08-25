@@ -1,4 +1,4 @@
-import { observable } from "mobx";
+import { computed, observable } from "mobx";
 
 export type NoteState = {
   note: string;
@@ -44,4 +44,12 @@ const DEFAULT_NOTES_STATE = NOTES.map((note) => ({
 
 export class OctaveStore {
   @observable notes: NoteState[] = observable(DEFAULT_NOTES_STATE);
+
+  @computed
+  get markedIndexes() {
+    return this.notes
+      .map((n, i) => ({ ...n, i }))
+      .filter(({ isMarked }) => isMarked)
+      .map(({ i }) => i);
+  }
 }

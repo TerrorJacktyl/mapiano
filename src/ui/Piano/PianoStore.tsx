@@ -1,4 +1,4 @@
-import { observable } from "mobx";
+import { computed, observable } from "mobx";
 import { OctaveStore } from "./Octave/OctaveStore";
 
 type Octave = {
@@ -12,5 +12,12 @@ export class PianoStore {
 
   constructor(octaves: Octave[]) {
     this.octaves = observable(octaves);
+  }
+
+  @computed
+  get markedNotesIndexes() {
+    return this.octaves.flatMap(({ store }, n) =>
+      store.markedIndexes.map((i) => i + n * 12)
+    );
   }
 }

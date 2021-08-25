@@ -6,7 +6,7 @@ import { PianoPresenter } from "./PianoPresenter";
 import { observer } from "mobx-react";
 
 export function createPiano() {
-  const NUMBER_OCTAVES = 2;
+  const NUMBER_OCTAVES = 3;
 
   // Combine octaves' stores into the piano's store
   const octaves = [...Array(NUMBER_OCTAVES)].map((_) => createOctave());
@@ -20,7 +20,7 @@ export function createPiano() {
 
   return observer(() => (
     <>
-      <p>First octave: {presenter.findChord}</p>
+      <p>Marked indexes: {store.markedNotesIndexes.toString()}</p>
       <PianoView>
         {octaves.map(({ Octave }, i) => (
           <Octave key={i} />
