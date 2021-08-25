@@ -18,7 +18,7 @@ export function createPiano() {
   const store = new PianoStore(octaveStores);
   const presenter = new PianoPresenter(store);
 
-  return observer(() => (
+  const Piano = observer(() => (
     <>
       <p>Marked indexes: {store.markedNotesIndexes.toString()}</p>
       <PianoView>
@@ -28,6 +28,8 @@ export function createPiano() {
       </PianoView>
     </>
   ));
+
+  return { Piano, mark: presenter.mark, unmarkAll: presenter.unmarkAll };
 }
 
 export {};
