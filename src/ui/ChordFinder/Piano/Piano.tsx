@@ -1,9 +1,8 @@
-import { storeAnnotation } from "mobx/dist/internal";
-import { createOctave } from "./Octave/Octave";
-import { PianoView } from "./PianoView";
-import { PianoStore } from "./PianoStore";
-import { PianoPresenter } from "./PianoPresenter";
 import { observer } from "mobx-react";
+import { createOctave } from "./Octave/Octave";
+import { PianoPresenter } from "./PianoPresenter";
+import { PianoStore } from "./PianoStore";
+import { PianoView } from "./PianoView";
 
 export function createPiano() {
   const NUMBER_OCTAVES = 2;
@@ -29,7 +28,12 @@ export function createPiano() {
     </>
   ));
 
-  return { Piano, mark: presenter.mark, unmarkAll: presenter.unmarkAll };
+  return {
+    Piano,
+    store: store,
+    mark: presenter.mark,
+    unmarkAll: presenter.unmarkAll,
+  };
 }
 
 export {};

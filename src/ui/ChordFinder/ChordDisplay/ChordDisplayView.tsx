@@ -1,8 +1,5 @@
-import { observer } from "mobx-react";
 import React from "react";
 import "./ChordDisplay.css";
-import { ChordDisplayPresenter } from "./ChordDisplayPresenter";
-import { ChordDisplayStore } from "./ChordDisplayStore";
 
 type Props = {
   chordName: string;
@@ -17,7 +14,11 @@ export function ChordDisplayView({
 }: Props) {
   return (
     <section className="ChordControlsView">
-      <form>
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+        }}
+      >
         <p>
           <label>{"Name: "}</label>
           {chordName}
@@ -36,20 +37,4 @@ export function ChordDisplayView({
       </form>
     </section>
   );
-}
-
-export function createChordDisplay() {
-  const store = new ChordDisplayStore();
-  const presenter = new ChordDisplayPresenter(store);
-
-  const ChordDisplay = observer(() => (
-    <ChordDisplayView
-      chordName={store.chordName.get()}
-      chordSymbol={store.chordSymbol.get()}
-      // need anonymity here to preserve 'this' binding to presenter
-      onChangeSymbol={(symbol) => presenter.updateSymbol(symbol)}
-    ></ChordDisplayView>
-  ));
-
-  return { ChordDisplay };
 }

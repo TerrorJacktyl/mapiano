@@ -1,4 +1,4 @@
-import { evaluate } from "./chords";
+import { evaluate, parseToChord } from "./chords";
 import type { chord, ParseResult } from "./parser";
 import { parse } from "./parser";
 
@@ -85,6 +85,6 @@ const evaluatedChords = manualTests
   .map((r) => evaluate(<chord>r.ast))
   .forEach((c) => console.log(c, c.name, c.intervals));
 
-console.log(parse("Csus2"));
+console.log(parseToChord(""));
 // To compile grammar and run tests
 // tspeg grammar.peg parser.ts && tsc grammar_test.ts | node grammar_test.js && rm *.js

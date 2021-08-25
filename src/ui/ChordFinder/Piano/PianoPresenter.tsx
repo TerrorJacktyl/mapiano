@@ -1,4 +1,4 @@
-import { action, autorun, computed, reaction, runInAction } from "mobx";
+import { action, computed, runInAction } from "mobx";
 import { Chord, Note } from "../../../chords/chords";
 import { NOTES } from "./Octave/OctaveStore";
 import { PianoStore } from "./PianoStore";

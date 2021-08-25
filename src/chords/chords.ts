@@ -1,4 +1,8 @@
-import type { chord as ParsedChord, quality as ParsedQuality } from "./parser";
+import {
+  chord as ParsedChord,
+  parse,
+  quality as ParsedQuality,
+} from "./parser";
 
 // Hardcode intervals
 
@@ -194,7 +198,7 @@ function evaluateQuality(quality: FullParsedQuality): Quality {
   throw "Unhandled quality:" + JSON.stringify(quality);
 }
 
-export function evaluate(chord: ParsedChord): Chord {
+export function evaluate(chord: ParsedChord | null): Chord {
   if (chord === null) throw Error("Parsed chord is null.");
   const { root: _root, quality: _quality } = chord;
   const root = new Note(<Tone>_root.tone, <NoteModifier>_root.modifier);
@@ -202,4 +206,8 @@ export function evaluate(chord: ParsedChord): Chord {
   return new Chord(root, quality);
 }
 
-export {};
+export function parseToChord(chordSymbol: string): Chord | undefined {
+  const { ast, errs } = parse(chordSymbol);
+  if (ast) return evaluate(ast);
+  return undefined;
+}

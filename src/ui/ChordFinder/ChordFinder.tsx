@@ -1,17 +1,27 @@
 import "./ChordFinder.css";
 import { observer } from "mobx-react";
-import {
-  ChordDisplayView,
-  createChordDisplay,
-} from "./ChordDisplay/ChordDisplayView";
+import { ChordDisplayView } from "./ChordDisplay/ChordDisplayView";
+import { createChordDisplay } from "./ChordDisplay/ChordDisplay";
 import { createPiano } from "./Piano/Piano";
 import { ChordFinderStore } from "./ChordFinderStore";
+import { ChordFinderPresenter } from "./ChordFinderPresenter";
 
 function createChordFinder() {
-  const { Piano, mark, unmarkAll } = createPiano();
+  const { Piano, store: pianoStore, mark, unmarkAll } = createPiano();
 
-  const { ChordDisplay } = createChordDisplay();
-  // const store = new ChordFinderStore();
+  const {
+    ChordDisplay,
+    store: displayStore,
+    updateSymbol,
+    updateName,
+  } = createChordDisplay();
+
+  const store = new ChordFinderStore(pianoStore, {
+    store: displayStore,
+    updateSymbol,
+    updateName,
+  });
+  const presenter = new ChordFinderPresenter(store);
 
   const cMajorInversionE = {
     name: "C Major (inversion over E)",
@@ -21,11 +31,6 @@ function createChordFinder() {
 
   return observer(() => (
     <div className="ChordFinderView">
-      {/* <ChordDisplayView
-        chordName={cMajorInversionE.name}
-        chordSymbol={cMajorInversionE.symbol}
-        onChangeSymbol={(symbol: string) => {}}
-      ></ChordDisplayView> */}
       <ChordDisplay></ChordDisplay>
       <Piano></Piano>
     </div>
