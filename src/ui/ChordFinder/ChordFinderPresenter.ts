@@ -4,12 +4,20 @@ import { ChordFinderStore } from "./ChordFinderStore";
 
 export class ChordFinderPresenter {
   constructor(private store: ChordFinderStore) {
-    // Whenever the input changes, update the chord name
+    // Whenever the input changes, update the chord name and intervals shown
     reaction(
       () => this.store.display.store.chordSymbol.get(),
       () => {
         const chord = this.chordFromSymbol;
-        this.store.display.updateName(chord ? chord.name : "");
+        const { piano, display } = this.store;
+        if (chord) {
+          display.updateName(chord.name);
+          piano.unmarkAll();
+          piano.mark(chord);
+        } else {
+          display.updateName("");
+          piano.unmarkAll();
+        }
       }
     );
   }

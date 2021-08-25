@@ -16,11 +16,15 @@ function createChordFinder() {
     updateName,
   } = createChordDisplay();
 
-  const store = new ChordFinderStore(pianoStore, {
-    store: displayStore,
-    updateSymbol,
-    updateName,
-  });
+  const store = new ChordFinderStore(
+    { store: pianoStore, mark, unmarkAll },
+    {
+      store: displayStore,
+      updateSymbol,
+      updateName,
+    }
+  );
+
   const presenter = new ChordFinderPresenter(store);
 
   const cMajorInversionE = {

@@ -19,7 +19,6 @@ export function createPiano() {
 
   const Piano = observer(() => (
     <>
-      <p>Marked indexes: {store.markedNotesIndexes.toString()}</p>
       <PianoView>
         {octaves.map(({ Octave }, i) => (
           <Octave key={i} />

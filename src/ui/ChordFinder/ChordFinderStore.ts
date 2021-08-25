@@ -1,7 +1,14 @@
+import { Chord } from "../../chords/chords";
 import { ChordDisplayStore } from "./ChordDisplay/ChordDisplayStore";
 import { PianoStore } from "./Piano/PianoStore";
 
-type ChordDisplay = {
+type PianoState = {
+  store: PianoStore;
+  mark: (chord: Chord) => void;
+  unmarkAll: () => void;
+};
+
+type ChordDisplayState = {
   store: ChordDisplayStore;
   updateSymbol: (symbol: string) => void;
   updateName: (symbol: string) => void;
@@ -9,7 +16,7 @@ type ChordDisplay = {
 
 export class ChordFinderStore {
   constructor(
-    readonly pianoStore: PianoStore,
-    readonly display: ChordDisplay
+    readonly piano: PianoState,
+    readonly display: ChordDisplayState
   ) {}
 }
