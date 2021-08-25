@@ -27,8 +27,12 @@ export class PianoPresenter {
     let scaledIntervals = intervals.map(
       (i) => i + PianoPresenter.noteIndex(root)
     );
-    if (scaledIntervals.some((i) => i < 0))
+    // Edge case: Cb should be scaled up an octave
+    if (scaledIntervals[0] < 0)
       scaledIntervals = scaledIntervals.map((i) => i + 12);
+    // Edge case: chords should be scaled down an octave where possible
+    if (scaledIntervals.every((i) => Math.floor(i / 12) > 0))
+      scaledIntervals = scaledIntervals.map((i) => i - 12);
     scaledIntervals.forEach((i) =>
       // do we need runinaction here?
       runInAction(() => octaves[Math.floor(i / 12)].mark([i % 12]))
