@@ -11,6 +11,7 @@
     "noFallthroughCasesInSwitch": true,
     "module": "esnext",
     "moduleResolution": "node",
+    "plugins": [{ "name": "deno_ls_plugin" }],
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,

@@ -1,7 +1,6 @@
-import { parse } from "./parser";
-import type { chord } from "./parser";
-import type { ParseResult } from "./parser";
 import { evaluate } from "./chords";
+import type { chord, ParseResult } from "./parser";
+import { parse } from "./parser";
 
 // Helper functions
 function zip<X, Y>(xs: X[], ys: Y[]) {
@@ -86,5 +85,6 @@ const evaluatedChords = manualTests
   .map((r) => evaluate(<chord>r.ast))
   .forEach((c) => console.log(c, c.name, c.intervals));
 
+console.log(parse("Csus2"));
 // To compile grammar and run tests
-// tspeg grammar.peg parser.ts && deno run grammar_test.ts
+// tspeg grammar.peg parser.ts && tsc grammar_test.ts | node grammar_test.js && rm *.js

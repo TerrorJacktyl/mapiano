@@ -1,4 +1,3 @@
-import { NOTES } from "../ui/ChordFinder/Piano/Octave/OctaveStore";
 import type { chord as ParsedChord, quality as ParsedQuality } from "./parser";
 
 // Hardcode intervals
@@ -118,15 +117,6 @@ export class Note implements TNote {
   get symbol() {
     return this.modifier ? this.tone + this.modifier : this.tone;
   }
-
-  /** Return the index for this note, where C = 0 and B = 11. */
-  get index() {
-    const { tone, modifier } = this;
-    return (
-      NOTES.findIndex((n) => n === tone) +
-      (modifier ? (modifier === "#" ? 1 : -1) : 0)
-    );
-  }
 }
 
 export class Chord implements TChord {
@@ -149,9 +139,7 @@ export class Chord implements TChord {
     if (!this._intervals) {
       let result = MAJOR;
       const modifiers: Modifier[] = [this.qualityModifier()];
-      for (const f of modifiers) {
-        result = f(result);
-      }
+      modifiers.forEach((f) => (result = f(result)));
       this._intervals = result;
     }
     return this._intervals;

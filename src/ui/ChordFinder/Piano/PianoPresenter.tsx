@@ -1,5 +1,6 @@
 import { action, autorun, computed, reaction, runInAction } from "mobx";
 import { Chord, Note } from "../../../chords/chords";
+import { NOTES } from "./Octave/OctaveStore";
 import { PianoStore } from "./PianoStore";
 
 // const isInteger = (n: number) => n % 1 === 0;
@@ -9,13 +10,13 @@ export class PianoPresenter {
   constructor(private store: PianoStore) {
     this.store = store;
 
-    // const aBigChord = new Chord(new Note("C", "#"), "Major");
-    // setTimeout(() => {
-    //   this.mark(aBigChord);
-    // }, 2000);
-    // setTimeout(() => {
-    //   this.unmarkAll();
-    // }, 5000);
+    const cSharpMajor = new Chord(new Note("C", "#"), "Major");
+    setTimeout(() => {
+      this.mark(cSharpMajor);
+    }, 2000);
+    setTimeout(() => {
+      this.unmarkAll();
+    }, 5000);
   }
 
   @computed
@@ -31,7 +32,9 @@ export class PianoPresenter {
   mark(chord: Chord) {
     const { octaves } = this.store;
     const { root, intervals } = chord;
-    const scaledIntervals = intervals.map((i) => i + root.index);
+    const scaledIntervals = intervals.map(
+      (i) => i + PianoPresenter.noteIndex(root)
+    );
     scaledIntervals.forEach((i) =>
       // do we need runinaction here?
       runInAction(() => octaves[Math.floor(i / 12)].mark([i % 12]))
@@ -43,6 +46,15 @@ export class PianoPresenter {
     // does using runinaction outside the foreach make a difference to above?
     runInAction(() =>
       this.store.octaves.forEach((octave) => octave.unmarkAll())
+    );
+  }
+
+  /** Return the index for a note, where C = 0 and B = 11. */
+  private static noteIndex(note: Note) {
+    const { tone, modifier } = note;
+    return (
+      NOTES.findIndex((n) => n === tone) +
+      (modifier ? (modifier === "#" ? 1 : -1) : 0)
     );
   }
 }
