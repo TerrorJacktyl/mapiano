@@ -1,22 +1,22 @@
 {
   "files": {
-    "main.css": "/mapiano/static/css/main.822564e8.chunk.css",
-    "main.js": "/mapiano/static/js/main.638aed6b.chunk.js",
-    "main.js.map": "/mapiano/static/js/main.638aed6b.chunk.js.map",
+    "main.css": "/mapiano/static/css/main.0ff508d7.chunk.css",
+    "main.js": "/mapiano/static/js/main.400b8c7a.chunk.js",
+    "main.js.map": "/mapiano/static/js/main.400b8c7a.chunk.js.map",
     "runtime-main.js": "/mapiano/static/js/runtime-main.4b052c11.js",
     "runtime-main.js.map": "/mapiano/static/js/runtime-main.4b052c11.js.map",
-    "static/js/2.b226041e.chunk.js": "/mapiano/static/js/2.b226041e.chunk.js",
-    "static/js/2.b226041e.chunk.js.map": "/mapiano/static/js/2.b226041e.chunk.js.map",
+    "static/js/2.56534a98.chunk.js": "/mapiano/static/js/2.56534a98.chunk.js",
+    "static/js/2.56534a98.chunk.js.map": "/mapiano/static/js/2.56534a98.chunk.js.map",
     "static/js/3.efa10f5d.chunk.js": "/mapiano/static/js/3.efa10f5d.chunk.js",
     "static/js/3.efa10f5d.chunk.js.map": "/mapiano/static/js/3.efa10f5d.chunk.js.map",
     "index.html": "/mapiano/index.html",
-    "static/css/main.822564e8.chunk.css.map": "/mapiano/static/css/main.822564e8.chunk.css.map",
-    "static/js/2.b226041e.chunk.js.LICENSE.txt": "/mapiano/static/js/2.b226041e.chunk.js.LICENSE.txt"
+    "static/css/main.0ff508d7.chunk.css.map": "/mapiano/static/css/main.0ff508d7.chunk.css.map",
+    "static/js/2.56534a98.chunk.js.LICENSE.txt": "/mapiano/static/js/2.56534a98.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.4b052c11.js",
-    "static/js/2.b226041e.chunk.js",
-    "static/css/main.822564e8.chunk.css",
-    "static/js/main.638aed6b.chunk.js"
+    "static/js/2.56534a98.chunk.js",
+    "static/css/main.0ff508d7.chunk.css",
+    "static/js/main.400b8c7a.chunk.js"
   ]
 }
