@@ -1,34 +1,32 @@
 import React from "react";
-import "./ChordControls.css";
-
-type Chord = {
-  name: string;
-  symbol: string;
-  notes: string[];
-};
+import "./ChordDisplay.css";
 
 type Props = {
-  chord: Chord;
+  chordName: string;
+  chordSymbol: string;
   onChangeSymbol: (symbol: string) => void;
 };
 
-export function ChordControls(props: Props) {
-  const { chord, onChangeSymbol: onChange } = props;
+export function ChordDisplayView({
+  chordName,
+  chordSymbol,
+  onChangeSymbol,
+}: Props) {
   return (
     <section className="ChordControlsView">
       <form>
         <p>
           <label>{"Name: "}</label>
-          {chord.name}
+          {chordName}
         </p>
         <p>
           <label>{"Chord: "}</label>
           <input
-            value={chord.symbol}
+            value={chordSymbol}
             type="text"
             name="chordName"
             onChange={(e: React.FormEvent<HTMLInputElement>) =>
-              onChange(e.currentTarget.value)
+              onChangeSymbol(e.currentTarget.value)
             }
           />
         </p>

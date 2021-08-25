@@ -1,4 +1,4 @@
-import { NOTES } from "../ui/Piano/Octave/OctaveStore";
+import { NOTES } from "../ui/ChordFinder/Piano/Octave/OctaveStore";
 import type { chord as ParsedChord, quality as ParsedQuality } from "./parser";
 
 // Hardcode intervals

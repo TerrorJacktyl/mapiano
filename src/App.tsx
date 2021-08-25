@@ -1,23 +1,10 @@
 import "./App.css";
-import { ChordControls } from "./ui/controls/ChordControls";
-import { createPiano } from "./ui/Piano/Piano";
+import { ChordFinder } from "./ui/ChordFinder/ChordFinder";
 
 function App() {
-  const cMajorInversionE = {
-    name: "C Major (inversion over E)",
-    symbol: "C/E",
-    notes: ["E", "G", "C"],
-  };
-
-  const Piano = createPiano();
-
   return (
     <div className="App">
-      <ChordControls
-        chord={cMajorInversionE}
-        onChangeSymbol={(symbol: string) => {}}
-      ></ChordControls>
-      <Piano></Piano>
+      <ChordFinder />
     </div>
   );
 }

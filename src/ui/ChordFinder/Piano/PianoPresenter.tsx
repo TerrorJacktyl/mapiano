@@ -1,5 +1,5 @@
 import { action, autorun, computed, reaction, runInAction } from "mobx";
-import { Chord, Note } from "../../chords/chords";
+import { Chord, Note } from "../../../chords/chords";
 import { PianoStore } from "./PianoStore";
 
 // const isInteger = (n: number) => n % 1 === 0;
