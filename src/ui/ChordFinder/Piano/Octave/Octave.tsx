@@ -14,8 +14,6 @@ export const createOctave = () => {
 
   const { notes } = store;
 
-  const { mark, unmarkAll } = presenter;
-
   const Octave = observer(() => (
     <OctaveView>
       <BlackKeys>
@@ -31,7 +29,7 @@ export const createOctave = () => {
               isKeySharp(noteState.note) ? (
                 <BlackKey
                   key={noteState.note}
-                  onClick={async () => presenter.toggleKey(noteState)}
+                  onClick={() => presenter.toggleKey(noteState)}
                   isMarked={noteState.isMarked}
                 ></BlackKey>
               ) : (
@@ -47,7 +45,7 @@ export const createOctave = () => {
             return (
               <WhiteKey
                 key={noteState.note}
-                onClick={async () => presenter.toggleKey(noteState)}
+                onClick={() => presenter.toggleKey(noteState)}
                 isMarked={noteState.isMarked}
               ></WhiteKey>
             );
@@ -56,5 +54,10 @@ export const createOctave = () => {
     </OctaveView>
   ));
 
-  return { Octave, store, mark, unmarkAll };
+  return {
+    Octave,
+    store,
+    mark: presenter.mark,
+    unmarkAll: presenter.unmarkAll,
+  };
 };

@@ -1,6 +1,6 @@
 import "./Key.css";
 type ClickProps = {
-  onClick: () => {};
+  onClick: () => void;
 };
 
 export type Props = ClickProps & {
