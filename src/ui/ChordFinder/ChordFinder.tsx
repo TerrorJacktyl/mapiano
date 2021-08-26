@@ -18,21 +18,13 @@ const createChordFinder = () => {
   // const { Piano, store: pianoStore, mark, unmarkAll } = createPiano();
   const NUMBER_OCTAVES = 2;
 
-  // Combine octaves' stores into the piano's store
-  const octaves = [...Array(NUMBER_OCTAVES)].map((_) => createOctave());
-  const octaveStores = octaves.map((octave) => ({
-    store: octave.store,
-    mark: octave.mark,
-    unmarkAll: octave.unmarkAll,
-  }));
-  const pianoStore = new PianoStore(octaveStores);
-  const pianoPresenter = new PianoPresenter(pianoStore);
+  const { Piano, store: pianoStore, mark, unmarkAll } = createPiano();
 
   const store = new ChordFinderStore(
     {
       store: pianoStore,
-      mark: pianoPresenter.mark,
-      unmarkAll: pianoPresenter.unmarkAll,
+      mark,
+      unmarkAll,
     },
     {
       store: displayStore,
@@ -57,19 +49,9 @@ const createChordFinder = () => {
   ));
 
   const onClickKey = () => presenter.onMarkedKeysChange();
-  octaves.forEach((octave) => {
+  pianoStore.octaves.forEach((octave) => {
     octave.store.onClickCallBack = onClickKey;
   });
-
-  const Piano = observer(() => (
-    <>
-      <PianoView>
-        {octaves.map(({ Octave }, i) => (
-          <Octave key={i} />
-        ))}
-      </PianoView>
-    </>
-  ));
 
   return observer(() => (
     <div className="ChordFinderView">

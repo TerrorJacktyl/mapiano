@@ -7,7 +7,6 @@ import { PianoView } from "./PianoView";
 export function createPiano() {
   const NUMBER_OCTAVES = 2;
 
-  const onClickKey = () => {};
   // Combine octaves' stores into the piano's store
   const octaves = [...Array(NUMBER_OCTAVES)].map((_) => createOctave());
   const octaveStores = octaves.map((octave) => ({
