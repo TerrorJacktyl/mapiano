@@ -1,4 +1,4 @@
-import { evaluate, parseToChord } from "./chords";
+import { evaluate, parseToChord } from "../chords";
 import type { chord, ParseResult } from "./parser";
 import { parse } from "./parser";
 

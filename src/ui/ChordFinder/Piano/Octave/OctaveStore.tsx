@@ -44,6 +44,8 @@ const DEFAULT_NOTES_STATE = NOTES.map((note) => ({
 
 export class OctaveStore {
   @observable readonly notes: NoteState[] = observable(DEFAULT_NOTES_STATE);
+  // Callback property that permits bidirectional state updates through parent ChordFinder
+  @observable onClickCallBack: () => void = () => {};
 
   @computed
   get markedIndexes() {

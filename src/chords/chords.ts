@@ -2,7 +2,7 @@ import {
   chord as ParsedChord,
   parse,
   quality as ParsedQuality,
-} from "./parser";
+} from "./symbols/parser";
 
 // Hardcode intervals
 

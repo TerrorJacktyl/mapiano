@@ -29,7 +29,10 @@ export const createOctave = () => {
               isKeySharp(noteState.note) ? (
                 <BlackKey
                   key={noteState.note}
-                  onClick={() => presenter.toggleKey(noteState)}
+                  onClick={() => {
+                    presenter.toggleKey(noteState);
+                    store.onClickCallBack();
+                  }}
                   isMarked={noteState.isMarked}
                 ></BlackKey>
               ) : (
@@ -45,7 +48,10 @@ export const createOctave = () => {
             return (
               <WhiteKey
                 key={noteState.note}
-                onClick={() => presenter.toggleKey(noteState)}
+                onClick={() => {
+                  presenter.toggleKey(noteState);
+                  store.onClickCallBack();
+                }}
                 isMarked={noteState.isMarked}
               ></WhiteKey>
             );

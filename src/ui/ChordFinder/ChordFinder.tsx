@@ -1,57 +1,39 @@
-import "./ChordFinder.css";
 import { observer } from "mobx-react";
-import { ChordDisplayView } from "./ChordDisplay/ChordDisplayView";
-import { createChordDisplay } from "./ChordDisplay/ChordDisplay";
-import { createPiano } from "./Piano/Piano";
-import { ChordFinderStore } from "./ChordFinderStore";
-import { ChordFinderPresenter } from "./ChordFinderPresenter";
-import { ChordDisplayStore } from "./ChordDisplay/ChordDisplayStore";
 import { ChordDisplayPresenter } from "./ChordDisplay/ChordDisplayPresenter";
+import { ChordDisplayStore } from "./ChordDisplay/ChordDisplayStore";
+import { ChordDisplayView } from "./ChordDisplay/ChordDisplayView";
+import "./ChordFinder.css";
+import { ChordFinderPresenter } from "./ChordFinderPresenter";
+import { ChordFinderStore } from "./ChordFinderStore";
+import { createOctave } from "./Piano/Octave/Octave";
+import { createPiano } from "./Piano/Piano";
 import { PianoPresenter } from "./Piano/PianoPresenter";
+import { PianoStore } from "./Piano/PianoStore";
+import { PianoView } from "./Piano/PianoView";
 
-function createChordFinder() {
-  const { Piano, store: pianoStore, mark, unmarkAll } = createPiano();
-
-  const {
-    ChordDisplay,
-    store: displayStore,
-    updateSymbol,
-    updateName,
-  } = createChordDisplay();
-
-  const store = new ChordFinderStore(
-    { store: pianoStore, mark, unmarkAll },
-    {
-      store: displayStore,
-      updateSymbol,
-      updateName,
-    }
-  );
-
-  const presenter = new ChordFinderPresenter(store);
-
-  const cMajorInversionE = {
-    name: "C Major (inversion over E)",
-    symbol: "C/E",
-    notes: ["E", "G", "C"],
-  };
-
-  return observer(() => (
-    <div className="ChordFinderView">
-      <ChordDisplay></ChordDisplay>
-      <Piano></Piano>
-    </div>
-  ));
-}
-
-const createChordFinder2 = () => {
+const createChordFinder = () => {
   const displayStore = new ChordDisplayStore();
   const displayPresenter = new ChordDisplayPresenter(displayStore);
 
-  const { Piano, store: pianoStore, mark, unmarkAll } = createPiano();
+  // const { Piano, store: pianoStore, mark, unmarkAll } = createPiano();
+  const NUMBER_OCTAVES = 2;
+
+  // Combine octaves' stores into the piano's store
+  const octaves = [...Array(NUMBER_OCTAVES)].map((_) => createOctave());
+  const octaveStores = octaves.map((octave) => ({
+    store: octave.store,
+    mark: octave.mark,
+    unmarkAll: octave.unmarkAll,
+  }));
+  const pianoStore = new PianoStore(octaveStores);
+  const pianoPresenter = new PianoPresenter(pianoStore);
 
   const store = new ChordFinderStore(
-    { store: pianoStore, mark, unmarkAll },
+    {
+      store: pianoStore,
+      mark: pianoPresenter.mark,
+      unmarkAll: pianoPresenter.unmarkAll,
+    },
     {
       store: displayStore,
       updateSymbol: displayPresenter.updateSymbol,
@@ -61,16 +43,32 @@ const createChordFinder2 = () => {
 
   const presenter = new ChordFinderPresenter(store);
 
+  const onChangeSymbol = (symbol: string) => {
+    displayPresenter.updateSymbol(symbol);
+    presenter.onSymbolChange();
+  };
+
   const ChordDisplay = observer(() => (
     <ChordDisplayView
       chordName={displayStore.chordName.get()}
       chordSymbol={displayStore.chordSymbol.get()}
-      // need anonymity and presenter.method here to preserve 'this' binding to presenter
-      onChangeSymbol={(symbol) => {
-        displayPresenter.updateSymbol(symbol);
-        presenter.onSymbolChange();
-      }}
+      onChangeSymbol={onChangeSymbol}
     ></ChordDisplayView>
+  ));
+
+  const onClickKey = () => presenter.onMarkedKeysChange();
+  octaves.forEach((octave) => {
+    octave.store.onClickCallBack = onClickKey;
+  });
+
+  const Piano = observer(() => (
+    <>
+      <PianoView>
+        {octaves.map(({ Octave }, i) => (
+          <Octave key={i} />
+        ))}
+      </PianoView>
+    </>
   ));
 
   return observer(() => (
@@ -81,4 +79,4 @@ const createChordFinder2 = () => {
   ));
 };
 
-export const ChordFinder = createChordFinder2();
+export const ChordFinder = createChordFinder();

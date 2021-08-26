@@ -36,6 +36,12 @@ export class ChordFinderPresenter {
     }
   }
 
+  @action
+  onMarkedKeysChange() {
+    // get marked keys info, try translate into chord
+    console.log("Did what my dad asked!");
+  }
+
   @computed
   get chordFromSymbol() {
     const chordSymbol = this.store.display.store.chordSymbol.get();
