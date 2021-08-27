@@ -11,15 +11,6 @@ export class PianoPresenter {
     this.store = store;
   }
 
-  @computed
-  get findChord() {
-    const pressedNotes = this.store.octaves[0].store.notes
-      .filter((n) => n.isMarked)
-      .map((n) => n.note);
-    console.log(pressedNotes);
-    return pressedNotes.toString();
-  }
-
   @action
   mark(chord: Chord) {
     const { octaves } = this.store;
@@ -45,6 +36,21 @@ export class PianoPresenter {
     runInAction(() =>
       this.store.octaves.forEach((octave) => octave.unmarkAll())
     );
+  }
+
+  /**
+   * @returns A list of indexes (where the lowest C = 0) of the keys that are currently marked.   *
+   *
+   * This is not a getter or mobx-computed value because it is not used by a reaction, and therefore will cache its initial value ([]).
+   * Calling this method forces it to eagerly evaluate every time. This is useful because it allows clicking on a piano key to trigger
+   * an update, rather than relying on mobx-reactions.
+   */
+  markedNotesIndexes() {
+    const octaves = this.store.octaves;
+    const markedIndexes = octaves.flatMap(({ store }, n) =>
+      store.markedIndexes.map((i) => i + n * 12)
+    );
+    return markedIndexes;
   }
 
   /** Return the index for a note, where C = 0 and B = 11. */

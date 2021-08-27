@@ -50,7 +50,7 @@ export class OctaveStore {
   @computed
   get markedIndexes() {
     return this.notes
-      .map((n, i) => ({ ...n, i }))
+      .map((note, i) => ({ ...note, i }))
       .filter(({ isMarked }) => isMarked)
       .map(({ i }) => i);
   }

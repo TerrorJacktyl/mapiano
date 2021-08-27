@@ -6,7 +6,7 @@ import {
 
 // Hardcode intervals
 
-enum Interval {
+export enum Interval {
   UNISON = 0,
   MINOR_SECOND = 1,
   MAJOR_SECOND = 2,

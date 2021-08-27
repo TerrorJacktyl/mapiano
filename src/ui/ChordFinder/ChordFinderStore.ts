@@ -6,6 +6,7 @@ type PianoState = {
   store: PianoStore;
   mark: (chord: Chord) => void;
   unmarkAll: () => void;
+  markedNotesIndexes: () => number[];
 };
 
 type ChordDisplayState = {
