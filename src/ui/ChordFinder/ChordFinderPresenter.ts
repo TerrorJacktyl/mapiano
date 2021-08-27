@@ -1,12 +1,12 @@
 import { action, computed } from "mobx";
-import { parseToChord } from "../../chords/chords";
+import { parseChordFromSymbol } from "../../chords/parseFromSymbol/parseFromSymbol";
 import { ChordFinderStore } from "./ChordFinderStore";
 
 export class ChordFinderPresenter {
   constructor(private store: ChordFinderStore) {}
 
   @action
-  onSymbolChange() {
+  onSymbolInput() {
     const chord = this.chordFromSymbol;
     const { piano, display } = this.store;
     if (chord) {
@@ -20,10 +20,11 @@ export class ChordFinderPresenter {
   }
 
   @action
-  onMarkedKeysChange() {
-    // const markedIntervals = this.store.piano.markedNotesIndexes();
+  onPianoInput() {
     const markedIntervals = this.markedIntervalsShiftedDown();
     console.log(markedIntervals);
+    // Try to lookup a chord (excluding its root) in the table of known interval lists.
+    // If a chord was found, apply the root to turn it into a chord, and update the display
   }
 
   /**
@@ -50,7 +51,7 @@ export class ChordFinderPresenter {
   @computed
   get chordFromSymbol() {
     const chordSymbol = this.store.display.store.chordSymbol.get();
-    const parsedChord = parseToChord(chordSymbol);
+    const parsedChord = parseChordFromSymbol(chordSymbol);
     return parsedChord;
   }
 }

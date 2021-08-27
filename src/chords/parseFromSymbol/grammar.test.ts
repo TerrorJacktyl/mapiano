@@ -1,4 +1,4 @@
-import { evaluate, parseToChord } from "../chords";
+import { evaluateParsedSymbol, parseChordFromSymbol } from "./parseFromSymbol";
 import type { chord, ParseResult } from "./parser";
 import { parse } from "./parser";
 
@@ -41,11 +41,11 @@ const QUALITIES = [
   "5",
   "sus2",
   "sus4",
-  "m7b5",
-  "ø",
+  // "m7b5",
+  // "ø",
 ];
-const chords = build([NOTES, QUALITIES]);
-console.log(chords);
+const allPossibleChordSymbols = build([NOTES, QUALITIES]);
+// console.log(allPossibleChordSymbols);
 
 const hasError = (result: ParseResult) =>
   result?.errs?.length && result.errs.length > 0;
@@ -66,7 +66,15 @@ function testAll(chordStrings: string[]) {
   );
 }
 
-testAll(chords);
+test("should parse all possible chord symbols", () => {
+  expect(
+    allPossibleChordSymbols
+      .map((input) => parse(input))
+      .filter((result) => !result.ast).length
+  ).toEqual(0);
+});
+
+testAll(allPossibleChordSymbols);
 
 // Test evaluate function
 const manualTests = [
@@ -82,9 +90,9 @@ const manualTests = [
 const evaluatedChords = manualTests
   .map(parse)
   .filter((r) => r.ast != null)
-  .map((r) => evaluate(<chord>r.ast))
+  .map((r) => evaluateParsedSymbol(<chord>r.ast))
   .forEach((c) => console.log(c, c.name, c.intervals));
 
-console.log(parseToChord(""));
+console.log(parseChordFromSymbol(""));
 // To compile grammar and run tests
 // tspeg grammar.peg parser.ts && tsc grammar_test.ts | node grammar_test.js && rm *.js

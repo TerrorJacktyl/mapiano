@@ -1,8 +1,3 @@
-import {
-  chord as ParsedChord,
-  parse,
-  quality as ParsedQuality,
-} from "./symbols/parser";
 
 // Hardcode intervals
 
@@ -86,16 +81,11 @@ const POWER = power(MAJOR);
 // Write chord extensions (b9, 9, 11, #11, b13, 13) and minor 7th modifications (M7)
 // Write chord modifications (sus2, sus4)
 
-type Tone = "C" | "D" | "E" | "F" | "G" | "A" | "B";
+export type Tone = "C" | "D" | "E" | "F" | "G" | "A" | "B";
 type Sharp = "#";
 type Flat = "b";
-type NoteModifier = undefined | Sharp | Flat;
-type TNote = {
-  tone: Tone;
-  modifier: NoteModifier;
-  symbol: string;
-};
-type Quality =
+export type NoteModifier = undefined | Sharp | Flat;
+export type QualityName =
   | "Major"
   | "Minor"
   | "Augmented"
@@ -104,9 +94,11 @@ type Quality =
   | "Power"
   | "Suspended 2nd"
   | "Suspended 4th";
-type TChord = {
-  root: Note;
-  quality: Quality;
+
+type TNote = {
+  tone: Tone;
+  modifier: NoteModifier;
+  symbol: string;
 };
 
 export class Note implements TNote {
@@ -123,34 +115,38 @@ export class Note implements TNote {
   }
 }
 
-export class Chord implements TChord {
-  root: Note;
-  quality: Quality;
-  private _intervals?: Interval[] = undefined;
+export class Quality {
+  constructor(readonly quality: QualityName) {}
 
-  constructor(root: Note, quality: Quality) {
-    this.root = root;
-    this.quality = quality;
+  get name() {
+    return this.quality;
   }
 
-  get name(): string {
-    const { root, quality } = this;
-    const names = [root.symbol, quality];
-    return names.join(" ");
-  }
-
-  get intervals(): Interval[] {
-    if (!this._intervals) {
-      let result = MAJOR;
-      const modifiers: Modifier[] = [this.qualityModifier()];
-      modifiers.forEach((f) => (result = f(result)));
-      this._intervals = result;
-    }
-    return this._intervals;
-  }
-
-  private qualityModifier() {
+  get symbol() {
     switch (this.quality) {
+      case "Major":
+        return "";
+      case "Minor":
+        return "m";
+      case "Augmented":
+        return "+";
+      case "Diminished":
+        return "o";
+      // case "Half Diminished":
+      //   return;
+      case "Power":
+        return "5";
+      case "Suspended 2nd":
+        return "sus2";
+      case "Suspended 4th":
+        return "sus4";
+      default:
+        throw `Unhandled quality case: ${this.quality}`;
+    }
+  }
+
+  get modifier() {
+    switch (this.name) {
       case "Major":
         return identity;
       case "Minor":
@@ -173,41 +169,37 @@ export class Chord implements TChord {
   }
 }
 
-// || Parsing
-
-type FullParsedQuality = ParsedQuality & {
-  major?: string;
-  minor?: string;
-  augmented?: string;
-  diminished?: string;
-  half_diminished?: string;
-  power?: string;
-  sus2?: string;
-  sus4?: string;
+type TChord = {
+  root: Note;
+  quality: Quality;
 };
 
-function evaluateQuality(quality: FullParsedQuality): Quality {
-  if (quality.major || quality.major === "") return "Major";
-  if (quality.minor) return "Minor";
-  if (quality.augmented) return "Augmented";
-  if (quality.diminished) return "Diminished";
-  // if (quality.half_diminished) return "Half Diminished";
-  if (quality.power) return "Power";
-  if (quality.sus2) return "Suspended 2nd";
-  if (quality.sus4) return "Suspended 4th";
-  throw "Unhandled quality:" + JSON.stringify(quality);
+export class Chord implements TChord {
+  private _intervals?: Interval[] = undefined;
+
+  constructor(readonly root: Note, readonly quality: Quality) {}
+
+  get name() {
+    const { root, quality } = this;
+    const names = [root.symbol, quality.name];
+    return names.join(" ");
+  }
+
+  get symbol() {
+    const { root, quality } = this;
+    const symbols = [root.symbol, quality.symbol];
+    return symbols.join("");
+  }
+
+  get intervals(): Interval[] {
+    if (!this._intervals) {
+      let result = MAJOR;
+      const modifiers: Modifier[] = [this.quality.modifier];
+      modifiers.forEach((f) => (result = f(result)));
+      this._intervals = result;
+    }
+    return this._intervals;
+  }
 }
 
-export function evaluate(chord: ParsedChord | null): Chord {
-  if (chord === null) throw Error("Parsed chord is null.");
-  const { root: _root, quality: _quality } = chord;
-  const root = new Note(<Tone>_root.tone, <NoteModifier>_root.modifier);
-  const quality = evaluateQuality(_quality);
-  return new Chord(root, quality);
-}
 
-export function parseToChord(chordSymbol: string): Chord | undefined {
-  const { ast, errs } = parse(chordSymbol);
-  if (ast) return evaluate(ast);
-  return undefined;
-}

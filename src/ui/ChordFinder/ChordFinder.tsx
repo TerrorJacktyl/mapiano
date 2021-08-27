@@ -37,7 +37,7 @@ const createChordFinder = () => {
 
   const onChangeSymbol = (symbol: string) => {
     displayPresenter.updateSymbol(symbol);
-    presenter.onSymbolChange();
+    presenter.onSymbolInput();
   };
 
   const ChordDisplay = observer(() => (
@@ -48,7 +48,7 @@ const createChordFinder = () => {
     ></ChordDisplayView>
   ));
 
-  const onClickKey = () => presenter.onMarkedKeysChange();
+  const onClickKey = () => presenter.onPianoInput();
   pianoStore.octaves.forEach((octave) => {
     octave.store.onClickCallBack = onClickKey;
   });
