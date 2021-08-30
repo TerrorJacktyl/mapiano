@@ -1,8 +1,4 @@
 import { action, computed } from "mobx";
-import {
-  collapseTextChangeRangesAcrossMultipleVersions,
-  displayPartsToString,
-} from "typescript";
 import parseChordFromPiano from "../../chords/parseFromPiano";
 import { parseChordFromSymbol } from "../../chords/parseFromSymbol/parseFromSymbol";
 import { ChordFinderStore } from "./ChordFinderStore";
@@ -28,7 +24,7 @@ export class ChordFinderPresenter {
   @action
   onPianoInput() {
     let markedIndexes = this.store.piano.markedNotesIndexes();
-    if (markedIndexes.length == 0) return;
+    if (markedIndexes.length === 0) return;
     markedIndexes =
       ChordFinderPresenter.markedIndexesShiftedDown(markedIndexes);
     const markedIntervals =
@@ -67,7 +63,7 @@ export class ChordFinderPresenter {
   }
 
   private static indexesToIntervals(indexes: number[]) {
-    if (indexes?.length == 0) return indexes;
+    if (indexes?.length === 0) return indexes;
     const root = indexes[0];
     return indexes.map((i) => i - root);
   }

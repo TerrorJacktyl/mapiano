@@ -1,16 +1,16 @@
 import {
+  Chord,
+  Note,
+  Quality,
+  QualityName,
+  Tone,
+  ToneModifier,
+} from "../chords";
+import {
   chord as ParsedChord,
   parse,
   quality as ParsedQuality,
 } from "./parser";
-import {
-  QualityName,
-  Chord,
-  Note,
-  Tone,
-  ToneModifier,
-  Quality,
-} from "../chords";
 
 // || Parsing from symbol
 type FullParsedQuality = ParsedQuality & {
@@ -32,13 +32,13 @@ function evaluateQualityName(quality: FullParsedQuality): QualityName {
   if (quality.power) return "Power";
   if (quality.sus2) return "Suspended 2nd";
   if (quality.sus4) return "Suspended 4th";
-  throw "Unhandled quality:" + JSON.stringify(quality);
+  throw Error("Unhandled quality:" + JSON.stringify(quality));
 }
 
 export function evaluateParsedSymbol(chord: ParsedChord | null): Chord {
   if (chord === null) throw Error("Parsed chord is null.");
   const { root: _root, quality: _quality } = chord;
-  const root = new Note(<Tone>_root.tone, <ToneModifier>_root.modifier);
+  const root = new Note(_root.tone as Tone, _root.modifier as ToneModifier);
   const quality = new Quality(evaluateQualityName(_quality));
   return new Chord(root, quality);
 }

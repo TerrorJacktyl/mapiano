@@ -1,18 +1,20 @@
 import {
+  isKeySharp,
+  Note as UINote,
+} from "../ui/ChordFinder/Piano/Octave/OctaveStore";
+import {
   Chord,
-  Interval,
   Note,
   Quality,
   QualityName,
   QUALITY_NAMES,
-  TChordFeatures,
   Tone,
   ToneModifier,
 } from "./chords";
-import {
-  isKeySharp,
-  Note as UINote,
-} from "../ui/ChordFinder/Piano/Octave/OctaveStore";
+
+/**
+ * Chord features are every attribute of a chord except the root note.
+ */
 
 type ChordFeatureNames = {
   quality: QualityName;
@@ -38,9 +40,6 @@ function intervalsToChordFeatures(qualities: QualityName[]) {
   return intervalsToFeatures;
 }
 
-/**
- * Chord features are every attribute of a chord except the root note.
- */
 const INTERVAL_LISTS_TO_CHORD_FEATURES =
   intervalsToChordFeatures(QUALITY_NAMES);
 

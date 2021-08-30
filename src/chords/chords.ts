@@ -63,18 +63,18 @@ const augmentedFifth = (ints: Interval[]) =>
   replace(ints, Interval.PERFECT_FIFTH, Interval.MINOR_SIXTH);
 const diminishedFifth = (ints: Interval[]) =>
   replace(ints, Interval.PERFECT_FIFTH, Interval.TRITONE);
-const minorSeventh = (ints: Interval[]) => add(ints, Interval.MINOR_SEVENTH);
-const diminishedSeventh = (ints: Interval[]) =>
-  add(ints, Interval.DIMINISHED_SEVENTH);
+// const minorSeventh = (ints: Interval[]) => add(ints, Interval.MINOR_SEVENTH);
+// const diminishedSeventh = (ints: Interval[]) =>
+// add(ints, Interval.DIMINISHED_SEVENTH);
 const power = (ints: Interval[]) =>
   remove(ints, [Interval.MAJOR_THIRD, Interval.MINOR_THIRD]);
 const sus2 = (ints: Interval[]) => add(power(ints), Interval.MAJOR_SECOND);
 const sus4 = (ints: Interval[]) => add(power(ints), Interval.PERFECT_FOURTH);
 
-const MINOR = minorThird(MAJOR);
-const AUGMENTED = augmentedFifth(MAJOR);
-const DIMINSHED = diminishedFifth(MINOR);
-const POWER = power(MAJOR);
+// const MINOR = minorThird(MAJOR);
+// const AUGMENTED = augmentedFifth(MAJOR);
+// const DIMINSHED = diminishedFifth(MINOR);
+// const POWER = power(MAJOR);
 
 // Write chord added intervals (major sixth, major/minor seventh, major 9th/11th/13th)
 // Write chord extensions (b9, 9, 11, #11, b13, 13) and minor 7th modifications (M7)
@@ -152,7 +152,7 @@ export class Quality {
       case "Suspended 4th":
         return "sus4";
       default:
-        throw `Unhandled quality case: ${this.quality}`;
+        throw Error(`Unhandled quality case: ${this.quality}`);
     }
   }
 
@@ -175,7 +175,7 @@ export class Quality {
       case "Suspended 4th":
         return sus4;
       default:
-        throw `Unhandled quality case: ${this.quality}`;
+        throw Error(`Unhandled quality case: ${this.quality}`);
     }
   }
 }
