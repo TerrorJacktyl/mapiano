@@ -2,7 +2,7 @@ import { action, runInAction } from "mobx";
 import { NoteState, OctaveStore } from "./OctaveStore";
 import * as Tone from "tone";
 
-const sampler = new Tone.Sampler({
+const TONE_SAMPLER_PARAMETERS = {
   urls: {
     A0: "A0.mp3",
     C1: "C1.mp3",
@@ -37,16 +37,19 @@ const sampler = new Tone.Sampler({
   },
   release: 1,
   baseUrl: "https://tonejs.github.io/audio/salamander/",
-}).toDestination();
+};
 
 export class OctavePresenter {
+  private sampler: Tone.Sampler;
+
   constructor(private store: OctaveStore) {
     this.mark = this.mark.bind(this);
+    this.sampler = new Tone.Sampler(TONE_SAMPLER_PARAMETERS).toDestination();
   }
 
   async playSound(note: string) {
     await Tone.loaded();
-    sampler.triggerAttack(note, "0.3s");
+    this.sampler.triggerAttackRelease(note, "0.3s");
   }
 
   async onClickSound(e: React.MouseEvent) {
