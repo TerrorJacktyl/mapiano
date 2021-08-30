@@ -1,10 +1,12 @@
+import { Note } from "../OctaveStore";
 import "./Key.css";
 type ClickProps = {
-  onClick: () => void;
+  onClick: (e: React.MouseEvent) => void;
 };
 
 export type Props = ClickProps & {
   isMarked: boolean;
+  note: string;
 };
 
 type KeyProps = Props & {
@@ -12,11 +14,13 @@ type KeyProps = Props & {
 };
 
 function Key(props: KeyProps) {
-  const { className, onClick, isMarked } = props;
+  const { className, onClick, isMarked, note } = props;
   return (
     <div
       className={`Key ${isMarked ? "Marked" : ""} ${className}`}
       onClick={onClick}
+      // @ts-ignore
+      note={note}
     ></div>
   );
 }

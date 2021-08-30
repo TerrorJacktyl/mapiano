@@ -8,7 +8,7 @@ export function createPiano() {
   const NUMBER_OCTAVES = 2;
 
   // Combine octaves' stores into the piano's store
-  const octaves = [...Array(NUMBER_OCTAVES)].map((_) => createOctave());
+  const octaves = [3, 4].map((i) => createOctave(i));
   const octaveStores = octaves.map((octave) => ({
     store: octave.store,
     mark: octave.mark,
@@ -19,7 +19,6 @@ export function createPiano() {
 
   const Piano = observer(() => (
     <>
-      {/* <p>Pressed indexes: {presenter.markedNotesIndexes.toString()}</p> */}
       <PianoView>
         {octaves.map(({ Octave }, i) => (
           <Octave key={i} />

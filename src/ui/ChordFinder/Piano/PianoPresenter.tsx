@@ -3,9 +3,6 @@ import { Chord, Note } from "../../../chords/chords";
 import { NOTES } from "./Octave/OctaveStore";
 import { PianoStore } from "./PianoStore";
 
-// const isInteger = (n: number) => n % 1 === 0;
-// const positiveModulo = (i: number, n: number) => ((i % n) + n) % n;
-
 export class PianoPresenter {
   constructor(private store: PianoStore) {
     this.store = store;

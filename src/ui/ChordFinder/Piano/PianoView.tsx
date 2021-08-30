@@ -1,6 +1,8 @@
-import { Props } from "./Octave/OctaveView";
 import "./Piano.css";
 
+type Props = {
+  children: JSX.Element[];
+};
 export function PianoView(props: Props) {
-  return <section className="PianoView">{props.children}</section>;
+  return <section className="PianoView" {...props}></section>;
 }

@@ -3,10 +3,11 @@ import { observer } from "mobx-react";
 import { isKeySharp, OctaveStore } from "./OctaveStore";
 import { OctavePresenter } from "./OctavePresenter";
 import { OctaveView, BlackKeys, WhiteKeys } from "./OctaveView";
+import React from "react";
 
 const NUMBER_OF_NOTES_IN_OCTAVE = 12;
 
-export const createOctave = () => {
+export const createOctave = (octave: number) => {
   const store = new OctaveStore();
   const presenter = new OctavePresenter(store);
 
@@ -27,8 +28,10 @@ export const createOctave = () => {
               isKeySharp(noteState.note) ? (
                 <BlackKey
                   key={noteState.note}
-                  onClick={() => {
+                  note={noteState.note + octave.toString()}
+                  onClick={(e: React.MouseEvent) => {
                     presenter.toggleKey(noteState);
+                    presenter.onClickSound(e);
                     store.onClickCallBack();
                   }}
                   isMarked={noteState.isMarked}
@@ -46,8 +49,10 @@ export const createOctave = () => {
             return (
               <WhiteKey
                 key={noteState.note}
-                onClick={() => {
+                note={noteState.note + octave.toString()}
+                onClick={(e: React.MouseEvent) => {
                   presenter.toggleKey(noteState);
+                  presenter.onClickSound(e);
                   store.onClickCallBack();
                 }}
                 isMarked={noteState.isMarked}
