@@ -27,7 +27,7 @@ function build(_xxs: string[][]): string[] {
 // Constants to exhaustively generate every possible chord
 const TONES = ["C", "D", "E", "F", "G", "A", "B"];
 const TONE_MODIFIERS = ["", "#", "b"];
-const NOTES = build([TONES, TONE_MODIFIERS]);
+const ROOTS = build([TONES, TONE_MODIFIERS]);
 const QUALITIES = [
   "",
   "maj",
@@ -44,27 +44,9 @@ const QUALITIES = [
   // "m7b5",
   // "ø",
 ];
-const allPossibleChordSymbols = build([NOTES, QUALITIES]);
+
+const allPossibleChordSymbols = build([ROOTS, QUALITIES]);
 // console.log(allPossibleChordSymbols);
-
-const hasError = (result: ParseResult) =>
-  result?.errs?.length && result.errs.length > 0;
-
-// Test all possible chords
-function testAll(chordStrings: string[]) {
-  let errorHasOccurred = false;
-  chordStrings
-    .map<[string, ParseResult]>((c) => [c, parse(c)])
-    .forEach(([c, r]: [string, ParseResult]) => {
-      if (hasError(r)) {
-        console.log(c, r.errs);
-        errorHasOccurred = true;
-      }
-    });
-  console.log(
-    errorHasOccurred ? "Errors found!" : "All chords parsed without errors!"
-  );
-}
 
 test("should parse all possible chord symbols", () => {
   expect(
@@ -73,8 +55,6 @@ test("should parse all possible chord symbols", () => {
       .filter((result) => !result.ast).length
   ).toEqual(0);
 });
-
-testAll(allPossibleChordSymbols);
 
 // Test evaluate function
 const manualTests = [

@@ -8,7 +8,7 @@ import {
   Chord,
   Note,
   Tone,
-  NoteModifier,
+  ToneModifier,
   Quality,
 } from "../chords";
 
@@ -38,7 +38,7 @@ function evaluateQualityName(quality: FullParsedQuality): QualityName {
 export function evaluateParsedSymbol(chord: ParsedChord | null): Chord {
   if (chord === null) throw Error("Parsed chord is null.");
   const { root: _root, quality: _quality } = chord;
-  const root = new Note(<Tone>_root.tone, <NoteModifier>_root.modifier);
+  const root = new Note(<Tone>_root.tone, <ToneModifier>_root.modifier);
   const quality = new Quality(evaluateQualityName(_quality));
   return new Chord(root, quality);
 }

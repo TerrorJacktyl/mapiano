@@ -1,12 +1,10 @@
 import { BlackKey, WhiteKey, GhostKey } from "./key/Key";
 import { observer } from "mobx-react";
-import { OctaveStore } from "./OctaveStore";
+import { isKeySharp, OctaveStore } from "./OctaveStore";
 import { OctavePresenter } from "./OctavePresenter";
 import { OctaveView, BlackKeys, WhiteKeys } from "./OctaveView";
 
 const NUMBER_OF_NOTES_IN_OCTAVE = 12;
-
-const isKeySharp = (note: string) => note.includes("#");
 
 export const createOctave = () => {
   const store = new OctaveStore();

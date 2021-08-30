@@ -1,4 +1,3 @@
-
 // Hardcode intervals
 
 export enum Interval {
@@ -82,9 +81,21 @@ const POWER = power(MAJOR);
 // Write chord modifications (sus2, sus4)
 
 export type Tone = "C" | "D" | "E" | "F" | "G" | "A" | "B";
+
 type Sharp = "#";
 type Flat = "b";
-export type NoteModifier = undefined | Sharp | Flat;
+export type ToneModifier = undefined | Sharp | Flat;
+
+export const QUALITY_NAMES = [
+  "Major",
+  "Minor",
+  "Augmented",
+  "Diminished",
+  // , "Half Diminished"
+  "Power",
+  "Suspended 2nd",
+  "Suspended 4th",
+] as QualityName[];
 export type QualityName =
   | "Major"
   | "Minor"
@@ -97,15 +108,15 @@ export type QualityName =
 
 type TNote = {
   tone: Tone;
-  modifier: NoteModifier;
+  modifier: ToneModifier;
   symbol: string;
 };
 
 export class Note implements TNote {
   tone: Tone;
-  modifier: NoteModifier = undefined;
+  modifier: ToneModifier = undefined;
 
-  constructor(tone: Tone, modifier?: NoteModifier) {
+  constructor(tone: Tone, modifier?: ToneModifier) {
     this.tone = tone;
     this.modifier = modifier;
   }
@@ -169,9 +180,12 @@ export class Quality {
   }
 }
 
-type TChord = {
-  root: Note;
+export type TChordFeatures = {
   quality: Quality;
+};
+
+type TChord = TChordFeatures & {
+  root: Note;
 };
 
 export class Chord implements TChord {
@@ -201,5 +215,3 @@ export class Chord implements TChord {
     return this._intervals;
   }
 }
-
-

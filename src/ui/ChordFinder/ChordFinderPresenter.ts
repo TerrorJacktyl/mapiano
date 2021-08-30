@@ -1,6 +1,9 @@
 import { action, computed } from "mobx";
+import { displayPartsToString } from "typescript";
+import parseChordFromPiano from "../../chords/parseFromPiano";
 import { parseChordFromSymbol } from "../../chords/parseFromSymbol/parseFromSymbol";
 import { ChordFinderStore } from "./ChordFinderStore";
+import { NOTES } from "./Piano/Octave/OctaveStore";
 
 export class ChordFinderPresenter {
   constructor(private store: ChordFinderStore) {}
@@ -21,8 +24,20 @@ export class ChordFinderPresenter {
 
   @action
   onPianoInput() {
-    const markedIntervals = this.markedIntervalsShiftedDown();
-    console.log(markedIntervals);
+    const markedIndexes = this.store.piano.markedNotesIndexes();
+    if (markedIndexes.length == 0) return;
+    const markedIntervals =
+      ChordFinderPresenter.markedIntervalsShiftedDown(markedIndexes);
+    const rootSymbol = NOTES[markedIndexes[0]];
+    const chord = parseChordFromPiano(rootSymbol, markedIntervals);
+    const { display } = this.store;
+    if (chord) {
+      display.updateName(chord.name);
+      display.updateSymbol(chord.symbol);
+    } else {
+      display.updateName("");
+      display.updateSymbol("");
+    }
     // Try to lookup a chord (excluding its root) in the table of known interval lists.
     // If a chord was found, apply the root to turn it into a chord, and update the display
   }
@@ -32,9 +47,7 @@ export class ChordFinderPresenter {
    * For example, marking B major (naturally spans the first two octaves) returns [11, 15, 18], while marking C major on
    * the second octave ([12, 16, 19] in the piano store) returns [0, 4, 7].
    */
-  private markedIntervalsShiftedDown() {
-    const markedIndexes = this.store.piano.markedNotesIndexes();
-
+  private static markedIntervalsShiftedDown(markedIndexes: number[]) {
     // Scale down marked intervals (i.e. C major on the second octave) where possible
     const octavesToScaleDown =
       markedIndexes.length > 0

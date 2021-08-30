@@ -5,6 +5,8 @@ export type NoteState = {
   isMarked: boolean;
 };
 
+export const isKeySharp = (note: string) => note.includes("#");
+
 /**
  * This Note type is used to provide a canonical and human-friendly representation for indexing the notes in an octave's state.
  */
