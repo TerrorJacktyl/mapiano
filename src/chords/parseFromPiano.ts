@@ -14,12 +14,16 @@ import {
   Note as UINote,
 } from "../ui/ChordFinder/Piano/Octave/OctaveStore";
 
+type ChordFeatureNames = {
+  quality: QualityName;
+};
+
 function intervalsToChordFeatures(qualities: QualityName[]) {
   const root = new Note("C");
   const chordsWithDistinctFeatures = qualities.map(
     (q) => new Chord(root, new Quality(q))
   );
-  const intervalsToFeatures: { [intervals: string]: TChordFeatures } = {};
+  const intervalsToFeatures: { [intervals: string]: ChordFeatureNames } = {};
   chordsWithDistinctFeatures.forEach(
     (chord) =>
       /** The same interval list will yield the same string representation even if the arrays are different.
@@ -28,7 +32,7 @@ function intervalsToChordFeatures(qualities: QualityName[]) {
        */
       /** */
       (intervalsToFeatures[chord.intervals.toString()] = {
-        quality: chord.quality,
+        quality: chord.quality.quality,
       })
   );
   return intervalsToFeatures;
@@ -45,9 +49,12 @@ export default function parseChordFromPiano(
   intervals: number[]
 ): Chord | undefined {
   const chordFeatures = INTERVAL_LISTS_TO_CHORD_FEATURES[intervals.toString()];
+  if (!chordFeatures) return undefined;
   const root = new Note(
     rootSymbol[0] as Tone,
     isKeySharp(rootSymbol) ? ("#" as ToneModifier) : undefined
   );
-  return chordFeatures ? new Chord(root, chordFeatures.quality) : undefined;
+  const quality = new Quality(chordFeatures.quality);
+  const chord = new Chord(root, quality);
+  return chord;
 }
