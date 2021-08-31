@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/mapiano/static/css/main.b96cd04d.chunk.css",
-    "main.js": "/mapiano/static/js/main.7238c1bd.chunk.js",
-    "main.js.map": "/mapiano/static/js/main.7238c1bd.chunk.js.map",
+    "main.js": "/mapiano/static/js/main.19b818a1.chunk.js",
+    "main.js.map": "/mapiano/static/js/main.19b818a1.chunk.js.map",
     "runtime-main.js": "/mapiano/static/js/runtime-main.332432a5.js",
     "runtime-main.js.map": "/mapiano/static/js/runtime-main.332432a5.js.map",
     "static/js/2.0fd7b8b8.chunk.js": "/mapiano/static/js/2.0fd7b8b8.chunk.js",
@@ -17,6 +17,6 @@
     "static/js/runtime-main.332432a5.js",
     "static/js/2.0fd7b8b8.chunk.js",
     "static/css/main.b96cd04d.chunk.css",
-    "static/js/main.7238c1bd.chunk.js"
+    "static/js/main.19b818a1.chunk.js"
   ]
 }
